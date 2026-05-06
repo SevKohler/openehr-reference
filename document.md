@@ -72,49 +72,49 @@ Example: an `ACTION` for a procedure carries `reason` as a `DV_REFERENCE` define
 Inherits from `DATA_VALUE`.
 
 <table>
-  <tr>
+  <tr style="background-color:#87CEEB; color:#000;">
     <td><b>CLASS</b></td>
     <td colspan="2"><b><code>DV_REFERENCE</code></b></td>
   </tr>
-  <tr>
+  <tr style="background-color:#ffffff; color:#000;">
     <td><b>Description</b></td>
     <td colspan="2">A reference from a clinical data value to another resource. Points internally to an EHR <code>LOCATABLE</code> (<code>internal_ref</code>) or externally to a non-openEHR entity (<code>external_ref</code>). When a target is linked, <code>proxy</code> surfaces specific values from it. When nothing is linked, <code>proxy</code> may instead carry hardcoded values populated directly by the modeler. Used inside <code>ELEMENT.value</code> wherever an archetype models a typed link, replacing the ad-hoc use of <code>LINK</code> for clinical references.</td>
   </tr>
-  <tr>
+  <tr style="background-color:#87CEEB; color:#000;">
     <td><b>Attributes</b></td>
     <td><b>Signature</b></td>
     <td><b>Meaning</b></td>
   </tr>
-  <tr>
+  <tr style="background-color:#ffffff; color:#000;">
     <td><code>internal_ref</code> (0..1)</td>
     <td><code>DV_EHR_URI</code></td>
     <td>Pointer to a <code>LOCATABLE</code> inside the EHR.</td>
   </tr>
-  <tr>
+  <tr style="background-color:#f5f5f5; color:#000;">
     <td><code>external_ref</code> (0..1)</td>
     <td><code>OBJECT_REF</code></td>
     <td>Pointer to an external entity.</td>
   </tr>
-  <tr>
+  <tr style="background-color:#ffffff; color:#000;">
     <td><code>type</code> (0..1)</td>
     <td><code>DV_CODED_TEXT</code></td>
     <td>Constrains what the reference points to (e.g. <code>fhir_location</code>, <code>openehr_evaluation</code>). Extensible value set: a standard set ships with the spec, implementations may add codes.</td>
   </tr>
-  <tr>
+  <tr style="background-color:#f5f5f5; color:#000;">
     <td><code>display</code> (0..1)</td>
     <td><code>DV_TEXT</code></td>
     <td>Human-readable label for the target.</td>
   </tr>
-  <tr>
+  <tr style="background-color:#ffffff; color:#000;">
     <td><code>proxy</code> (0..*)</td>
     <td><code>List&lt;PROXY_VALUE&gt;</code></td>
     <td>Values surfaced from the target, or hardcoded when no link is set.</td>
   </tr>
-  <tr>
+  <tr style="background-color:#87CEEB; color:#000;">
     <td><b>Invariants</b></td>
     <td colspan="2"></td>
   </tr>
-  <tr>
+  <tr style="background-color:#ffffff; color:#000;">
     <td colspan="3">
       <ul>
         <li>At most one of <code>internal_ref</code> or <code>external_ref</code> is set.</li>
@@ -128,34 +128,34 @@ Inherits from `DATA_VALUE`.
 #### `PROXY_VALUE` class
 
 <table>
-  <tr>
+  <tr style="background-color:#87CEEB; color:#000;">
     <td><b>CLASS</b></td>
     <td colspan="2"><b><code>PROXY_VALUE</code></b></td>
   </tr>
-  <tr>
+  <tr style="background-color:#ffffff; color:#000;">
     <td><b>Description</b></td>
     <td colspan="2">Carries a value alongside a reference. With <code>path</code> set, it surfaces a value resolved from <code>internal_ref</code>. Without <code>path</code>, it carries a hardcoded value the modeler populated directly.</td>
   </tr>
-  <tr>
+  <tr style="background-color:#87CEEB; color:#000;">
     <td><b>Attributes</b></td>
     <td><b>Signature</b></td>
     <td><b>Meaning</b></td>
   </tr>
-  <tr>
+  <tr style="background-color:#ffffff; color:#000;">
     <td><code>path</code> (0..1)</td>
     <td><code>EHR_PATH</code></td>
     <td>Archetype path relative to <code>internal_ref</code>. Present when proxying from a linked target.</td>
   </tr>
-  <tr>
+  <tr style="background-color:#f5f5f5; color:#000;">
     <td><code>value</code> (0..1)</td>
     <td><code>DATA_VALUE</code></td>
     <td>Resolved or hardcoded value.</td>
   </tr>
-  <tr>
+  <tr style="background-color:#87CEEB; color:#000;">
     <td><b>Invariants</b></td>
     <td colspan="2"></td>
   </tr>
-  <tr>
+  <tr style="background-color:#ffffff; color:#000;">
     <td colspan="3">
       <ul>
         <li>At least one of <code>path</code> or <code>value</code> is set.</li>
@@ -229,20 +229,20 @@ Mental model: slot a CLUSTER from another archetype, pick and respec the fields 
 `CLUSTER` gets one new optional attribute. Everything else stays as it is today.
 
 <table>
-  <tr>
+  <tr style="background-color:#87CEEB; color:#000;">
     <td><b>CLASS</b></td>
     <td colspan="2"><b><code>CLUSTER</code></b> (extension)</td>
   </tr>
-  <tr>
+  <tr style="background-color:#ffffff; color:#000;">
     <td><b>Description</b></td>
     <td colspan="2">Adds a single shared link to a source archetype. When set, child ELEMENTs may resolve their values from paths inside that link. The CLUSTER otherwise behaves as a normal `CLUSTER`.</td>
   </tr>
-  <tr>
+  <tr style="background-color:#87CEEB; color:#000;">
     <td><b>Attributes</b></td>
     <td><b>Signature</b></td>
     <td><b>Meaning</b></td>
   </tr>
-  <tr>
+  <tr style="background-color:#ffffff; color:#000;">
     <td><code>shared_link</code> (0..1)</td>
     <td><code>DV_REFERENCE</code></td>
     <td>Link to a source archetype shared by all child ELEMENTs that resolve from it.</td>
@@ -252,16 +252,16 @@ Mental model: slot a CLUSTER from another archetype, pick and respec the fields 
 `ELEMENT` gets one new optional attribute, `source_path`. When set, the value was resolved from the parent CLUSTER's `shared_link` at that path. When unset, the value was hardcoded.
 
 <table>
-  <tr>
+  <tr style="background-color:#87CEEB; color:#000;">
     <td><b>CLASS</b></td>
     <td colspan="2"><b><code>ELEMENT</code></b> (extension)</td>
   </tr>
-  <tr>
+  <tr style="background-color:#87CEEB; color:#000;">
     <td><b>Attributes</b></td>
     <td><b>Signature</b></td>
     <td><b>Meaning</b></td>
   </tr>
-  <tr>
+  <tr style="background-color:#ffffff; color:#000;">
     <td><code>source_path</code> (0..1)</td>
     <td><code>EHR_PATH</code></td>
     <td>If set, the value was resolved from the parent CLUSTER's <code>shared_link</code> at this path. If unset, the value was hardcoded.</td>
