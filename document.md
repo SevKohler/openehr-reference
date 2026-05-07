@@ -39,6 +39,12 @@ You also cannot proxy parts of the referenced data the way `CodeableReference` d
 3. **`CLUSTER` archetype that hosts a link**, e.g. a device cluster pointing to a device entry. References work at sub-composition granularity, not only at archetype root.
 4. **Archetype that surfaces multiple fields from the same source**, e.g. linking a `problem_diagnosis` and showing both diagnosis and severity from it. The single-field case is easy: one ELEMENT, one link, done. Two or more fields raise a real modeling question. A modeler's instinct is to write `ELEMENT[reason]` and `ELEMENT[severity]` as separate fields, each with its own description, value set, and terminology bindings. Open questions: do they share one link, do they carry one each, or is this an engine-level concern that resolves the values at runtime from a single shared link. Meaning also shifts when linking: the source archetype calls the field `diagnosis`, but the using archetype frames it as `reason`. Could the description be copied over from the source? Probably not, sadly. The using side's semantics win, so the source description rarely fits.
 5. **Reference to an external entity** outside openEHR, e.g. a FHIR `Organization` from the demographic side. External pointer typed as `fhir_organization`.
+6. The CodeabelReference where we have geniuly a choice a simple code maybe enough, or you want to link smt or maybe they need to slot that in. Like a Device name. Oh wait we want to point to the actual structure. 
+7. Sombedy has an archetype we need to know the device name, just that. Someone else says occassionaly we need more details about the device, right now you would add a cluster slot for device and but now we have a problem we havce a decvice name in the top level, but we also have a device name in the cluster so which one do we use. Can we point the top one to the one in the cluster. Could we not one place where we expand the coded to a complex strucutre. 
+8. Now more complicated now this device is not even stored in the EHR maybe we got a registry and we point to that them and e.g. stored in a fhir store. Connect to a Cluster archetype we need to point out to an external locations. 
+External Internal Slot and CodedText.
+
+Replace DEVICE link you have with the DV_REFERENCE 
 
 ## Requirements
 
@@ -67,6 +73,16 @@ For a `COMPOSITION`, the only RM-level slot is the encounter (`EVENT_CONTEXT`). 
 
 Example: an `ACTION` for a procedure carries `reason` as a `DV_REFERENCE` defined in the archetype, targeting the `EVALUATION` for `problem_diagnosis` and proxying the diagnosis code. Today this lives in free text or is bolted on via a `LINK`, so tooling cannot rely on it.
 
+
+Slot as it should be
+
+SLOT REFERENCE
+
+SLOT || REFERENCE THIS IS THE SITUATION
+
+Add to the CLUSTER SLOT, or add an ITEM_STRUCTURE into REFERENCE. 
+
+ELEMENT converge and CLUSTER into CLASS and then allowed SMART LINKS. 
 ### `DV_REFERENCE` class
 
 Inherits from `DATA_VALUE`.
