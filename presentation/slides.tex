@@ -128,13 +128,18 @@
 \section{Proposal}
 
 \begin{frame}{Proposal: \texttt{DV\_REFERENCE}}
-  \begin{itemize}
-    \item New \texttt{DATA\_VALUE} subclass, usable inside \texttt{ELEMENT.value}
-    \item Unifies internal and external references in one type
-    \item \texttt{internal\_ref}: pointer to a \texttt{LOCATABLE} inside the EHR
-    \item \texttt{external\_ref}: pointer to an entity outside openEHR
-    \item \texttt{proxy}: values surfaced from the target or hardcoded as fallback
-  \end{itemize}
+  \begin{columns}[T]
+    \column{0.45\textwidth}
+      \begin{itemize}
+        \item New \texttt{DATA\_VALUE} subclass, usable inside \texttt{ELEMENT.value}
+        \item Unifies internal and external references in one type
+        \item \texttt{internal\_ref}: pointer to a \texttt{LOCATABLE} inside the EHR
+        \item \texttt{external\_ref}: pointer to an entity outside openEHR
+        \item \texttt{proxy}: values surfaced from the target or hardcoded as fallback
+      \end{itemize}
+    \column{0.55\textwidth}
+      \includegraphics[width=\textwidth]{../DV_REFERENCE.png}
+  \end{columns}
 \end{frame}
 
 \begin{frame}{\texttt{DV\_REFERENCE}: coded fallback}
@@ -147,23 +152,32 @@
 \end{frame}
 
 \begin{frame}{\texttt{DV\_REFERENCE}: proxy values}
-  \begin{itemize}
-    \item \texttt{proxy} holds a list of \texttt{PROXY\_VALUE} entries
-    \item Each entry carries a path relative to \texttt{internal\_ref} and a resolved value
-    \item Path resolved at recording time, value stored alongside the reference
-    \item No duplication: source is authoritative, proxy is a snapshot
-    \item Without a link: proxy carries hardcoded values set by the modeler
-  \end{itemize}
+  \begin{columns}[T]
+    \column{0.45\textwidth}
+      \begin{itemize}
+        \item \texttt{proxy} holds a list of \texttt{PROXY\_VALUE} entries
+        \item Each entry carries a path relative to \texttt{internal\_ref} and a resolved value
+        \item Path resolved at recording time, value stored alongside the reference
+        \item No duplication: source is authoritative, proxy is a snapshot
+        \item Without a link: proxy carries hardcoded values set by the modeler
+      \end{itemize}
+    \column{0.55\textwidth}
+      \includegraphics[width=\textwidth]{../PROXY_VALUES.png}
+  \end{columns}
 \end{frame}
 
 \begin{frame}{\texttt{DV\_REFERENCE}: post-coordinated terms}
-  \begin{itemize}
-    \item \texttt{PROXY\_DEFINITION} extends \texttt{PROXY\_BASE} for composed concepts
-    \item Holds a list of \texttt{DEFINITION\_COMPONENT} entries
-    \item Each component is a \texttt{(term, path)} pair: one axis of the definition
-    \item Example: finding + laterality + site compose "Malignant neoplasm of right testis"
-    \item Single assembled \texttt{value} inherited from \texttt{PROXY\_BASE}
-  \end{itemize}
+  \begin{columns}[T]
+    \column{0.45\textwidth}
+      \begin{itemize}
+        \item \texttt{PROXY\_DEFINITION} extends \texttt{PROXY\_BASE} for composed concepts
+        \item Holds a list of \texttt{DEFINITION\_COMPONENT} entries
+        \item Each component is a \texttt{(term, path)} pair: one axis of the definition
+        \item Example: finding + laterality + site compose "Malignant neoplasm of right testis"
+      \end{itemize}
+    \column{0.55\textwidth}
+      \includegraphics[width=\textwidth]{../PROXY_DEFINTION.png}
+  \end{columns}
 \end{frame}
 
 \begin{frame}{CLUSTER with \texttt{shared\_link}}
