@@ -38,6 +38,29 @@
   \end{alertblock}
 \end{frame}
 
+\begin{frame}{A concrete example}
+  A \textbf{Procedure} archetype has a \texttt{reason} field.
+
+  \bigskip
+  \begin{itemize}
+    \item If a linked \texttt{problem\_diagnosis} exists in the EHR $\rightarrow$
+          the field should \textbf{point to it} and optionally surface the diagnosis
+          code inline
+    \item If nothing is linked yet $\rightarrow$ the field should fall back to a
+          \textbf{static coded value} from a value set
+  \end{itemize}
+
+  \bigskip
+  Both cases belong in the \textbf{same field}, constrained by the archetype,
+  not bolted on via a side-channel.
+
+  \bigskip
+  \begin{alertblock}{Today in openEHR}
+    No single mechanism covers this. Modelers either duplicate the value, use a
+    free-text \texttt{LINK} nobody queries, or leave the field disconnected.
+  \end{alertblock}
+\end{frame}
+
 % ─────────────────────────────────────────────────────────────────────────────
 \section{How FHIR solves it}
 % ─────────────────────────────────────────────────────────────────────────────
@@ -134,28 +157,35 @@
   expressed cleanly in one field.
 \end{frame}
 
-\begin{frame}{Problem 3: two separate mechanisms, no bridge}
-  \begin{columns}[T]
-    \column{0.48\textwidth}
-      \textbf{Internal (\texttt{LINK})}
-      \begin{itemize}
-        \item Points inside the EHR
-        \item On every \texttt{LOCATABLE}
-        \item Free-string type
-      \end{itemize}
-
-    \column{0.48\textwidth}
-      \textbf{External (\texttt{OBJECT\_REF} etc.)}
-      \begin{itemize}
-        \item Hard-coded in the RM for specific classes (PARTY etc.)
-        \item Cannot be used inside \texttt{ELEMENT.value}
-        \item No coded fallback
-      \end{itemize}
-  \end{columns}
+\begin{frame}{Problem 3a: internal references are uncontrolled}
+  \texttt{LINK} is the only mechanism for pointing to something inside the EHR.
 
   \bigskip
-  There is no single mechanism that covers both internal and external targets,
-  is usable inside an archetype field, and supports a coded fallback.
+  \begin{itemize}
+    \item Attached to \textbf{every} \texttt{LOCATABLE} — no way to restrict it
+          to specific archetypes or fields
+    \item \texttt{type} is a free string — no terminology binding, no validation
+    \item Cannot be placed inside \texttt{ELEMENT.value}, so archetypes cannot
+          model a reference as a proper field with constraints
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Problem 3b: external references are hard-coded in the RM}
+  External references (\texttt{OBJECT\_REF}, \texttt{PARTY\_REF} etc.) are
+  baked into specific RM classes — they are \textbf{not} a general-purpose type.
+
+  \bigskip
+  \begin{itemize}
+    \item Cannot be used inside \texttt{ELEMENT.value} in an archetype
+    \item No overlap with \texttt{LINK} — the two mechanisms cannot substitute
+          for each other
+    \item Pointing to e.g. a FHIR resource or an external registry requires
+          adding a new hard-coded RM attribute, not a reusable pattern
+  \end{itemize}
+
+  \bigskip
+  Result: internal and external references are \textbf{two entirely separate
+  worlds} with no shared abstraction.
 \end{frame}
 
 \begin{frame}{Problem 4: no value proxying}
