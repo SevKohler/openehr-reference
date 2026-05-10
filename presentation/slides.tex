@@ -160,6 +160,16 @@
   \end{figure}
 \end{frame}
 
+\begin{frame}{Example: \texttt{Procedure.reason}}
+  \begin{itemize}
+    \item \texttt{ELEMENT.value} constrained to \texttt{DV\_REFERENCE} or \texttt{DV\_CODED\_TEXT}
+    \item \texttt{internal\_ref} points to a \texttt{problem\_diagnosis} EVALUATION
+    \item \texttt{proxy} surfaces the diagnosis code from the linked archetype
+    \item If no diagnosis is linked: field falls back to a coded value from the reason value set
+    \item One field, one constraint, two valid states
+  \end{itemize}
+\end{frame}
+
 \begin{frame}{Post-coordinated terms}
   \begin{itemize}
     \item \texttt{PROXY\_EXPRESSION} extends \texttt{PROXY\_BASE} for composed concepts
@@ -174,6 +184,20 @@
   \begin{figure}
     \includegraphics[width=\textwidth]{../Expression_definition.png}
   \end{figure}
+\end{frame}
+
+\begin{frame}{Example: post-coordinated expression}
+  \begin{itemize}
+    \item Goal: record "Malignant neoplasm of right testis" as a composed concept
+    \item \texttt{PROXY\_EXPRESSION} on a \texttt{DV\_REFERENCE} with \texttt{internal\_ref} to a SNOMED archetype
+    \item \texttt{EXPRESSION\_DEFINITION} entries:
+      \begin{itemize}
+        \item \texttt{finding} $\rightarrow$ path to malignant neoplasm code
+        \item \texttt{laterality} $\rightarrow$ path to "right"
+        \item \texttt{site} $\rightarrow$ path to "testis"
+      \end{itemize}
+    \item Assembled \texttt{value}: the composed term stored as a single \texttt{DATA\_VALUE}
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{CLUSTER with \texttt{shared\_link}}
