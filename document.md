@@ -102,23 +102,23 @@ Inherits from `DATA_VALUE`.
     <td><b>Meaning</b></td>
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
-    <td><code>internal_ref</code> (0..1)</td>
-    <td><code>DV_EHR_URI</code></td>
+    <td>0..1</td>
+    <td><code>internal_ref</code>: <code>DV_EHR_URI</code></td>
     <td>Pointer to a <code>LOCATABLE</code> inside the EHR.</td>
   </tr>
   <tr style="background-color:#f5f5f5; color:#000;">
-    <td><code>external_ref</code> (0..1)</td>
-    <td><code>OBJECT_REF</code></td>
+    <td>0..1</td>
+    <td><code>external_ref</code>: <code>OBJECT_REF</code></td>
     <td>Pointer to an external entity.</td>
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
-    <td><code>display</code> (0..1)</td>
-    <td><code>DV_TEXT</code></td>
+    <td>0..1</td>
+    <td><code>display</code>: <code>DV_TEXT</code></td>
     <td>Human-readable label for the target.</td>
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
-    <td><code>proxy</code> (0..*)</td>
-    <td><code>List&lt;PROXY_VALUE&gt;</code></td>
+    <td>0..*</td>
+    <td><code>proxy</code>: <code>List&lt;PROXY_VALUE&gt;</code></td>
     <td>Values surfaced from the target, or hardcoded when no link is set.</td>
   </tr>
   <tr style="background-color:#87CEEB; color:#000;">
@@ -153,13 +153,13 @@ Inherits from `DATA_VALUE`.
     <td><b>Meaning</b></td>
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
-    <td><code>path</code> (0..*)</td>
-    <td><code>EHR_PATH</code></td>
+    <td>0..*</td>
+    <td><code>path</code>: <code>EHR_PATH</code></td>
     <td>One or more archetype paths relative to <code>internal_ref</code>.</td>
   </tr>
   <tr style="background-color:#f5f5f5; color:#000;">
-    <td><code>value</code> (0..1)</td>
-    <td><code>DATA_VALUE</code></td>
+    <td>0..1</td>
+    <td><code>value</code>: <code>DATA_VALUE</code></td>
     <td>Resolved or hardcoded value.</td>
   </tr>
 </table>
@@ -183,8 +183,8 @@ Inherits from `PROXY_BASE`. Narrows `path` to `0..1`.
     <td><b>Meaning</b></td>
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
-    <td><code>path</code> (0..1)</td>
-    <td><code>EHR_PATH</code></td>
+    <td>0..1</td>
+    <td><code>path</code>: <code>EHR_PATH</code></td>
     <td>Archetype path relative to <code>internal_ref</code>. Present when proxying from a linked target.</td>
   </tr>
   <tr style="background-color:#87CEEB; color:#000;">
@@ -219,8 +219,8 @@ Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOM
     <td><b>Meaning</b></td>
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
-    <td><code>components</code> (1..*)</td>
-    <td><code>List&lt;DEFINITION_COMPONENT&gt;</code></td>
+    <td>1..*</td>
+    <td><code>components</code>: <code>List&lt;DEFINITION_COMPONENT&gt;</code></td>
     <td>Ordered list of component axes that compose the definition.</td>
   </tr>
   <tr style="background-color:#87CEEB; color:#000;">
@@ -253,13 +253,13 @@ Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOM
     <td><b>Meaning</b></td>
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
-    <td><code>term</code> (1..1)</td>
-    <td><code>String</code></td>
+    <td>1..1</td>
+    <td><code>term</code>: <code>String</code></td>
     <td>Label for this component axis, e.g. <code>"finding"</code>, <code>"laterality"</code>, <code>"site"</code>.</td>
   </tr>
   <tr style="background-color:#f5f5f5; color:#000;">
-    <td><code>path</code> (0..1)</td>
-    <td><code>EHR_PATH</code></td>
+    <td>0..1</td>
+    <td><code>path</code>: <code>EHR_PATH</code></td>
     <td>Path to the value for this axis, relative to <code>internal_ref</code>. Absent if the component value is hardcoded.</td>
   </tr>
   <tr style="background-color:#87CEEB; color:#000;">
@@ -294,23 +294,23 @@ Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOM
     <td><b>Meaning</b></td>
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
-    <td><code>value</code> (1..1)</td>
-    <td><code>String</code></td>
+    <td>1..1</td>
+    <td><code>value</code>: <code>String</code></td>
     <td>The EHR URI. Must use the <code>ehr://</code> scheme.</td>
   </tr>
   <tr style="background-color:#f5f5f5; color:#000;">
-    <td><code>namespace</code> (1..1)</td>
-    <td><code>String</code></td>
+    <td>1..1</td>
+    <td><code>namespace</code>: <code>String</code></td>
     <td>Namespace to which this identifier belongs in the local system context (and possibly in any other openEHR compliant environment) e.g. terminology, demographic. Legal values are: <code>"local"</code>, <code>"unknown"</code>, or a string matching <code>[a-zA-Z][a-zA-Z0-9_.:\/&?=+-]*</code>.</td>
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
-    <td><code>type</code> (1..1)</td>
-    <td><code>String</code></td>
+    <td>1..1</td>
+    <td><code>type</code>: <code>String</code></td>
     <td>Name of the class (concrete or abstract) of object to which this identifier type refers, e.g. <code>PARTY</code>, <code>PERSON</code>, <code>EVALUATION</code>. Use <code>ANY</code> to indicate that any type is accepted.</td>
   </tr>
   <tr style="background-color:#f5f5f5; color:#000;">
-    <td><code>archetype_id</code> (0..1)</td>
-    <td><code>String</code></td>
+    <td>0..1</td>
+    <td><code>archetype_id</code>: <code>String</code></td>
     <td>Constrains the archetype of the target <code>LOCATABLE</code>. Validated as an archetype id regex at constraint time.</td>
   </tr>
 </table>
@@ -338,8 +338,8 @@ For multi-field references, a CLUSTER with a single `shared_link` is the more na
     <td><b>Meaning</b></td>
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
-    <td><code>shared_link</code> (0..1)</td>
-    <td><code>DV_REFERENCE</code></td>
+    <td>0..1</td>
+    <td><code>shared_link</code>: <code>DV_REFERENCE</code></td>
     <td>Link to a source archetype shared by all child ELEMENTs that resolve from it.</td>
   </tr>
 </table>
