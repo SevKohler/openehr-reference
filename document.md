@@ -136,7 +136,37 @@ Inherits from `DATA_VALUE`.
   </tr>
 </table>
 
+#### `PROXY_BASE` class
+
+<table>
+  <tr style="background-color:#87CEEB; color:#000;">
+    <td><b>CLASS</b></td>
+    <td colspan="2"><b><code>PROXY_BASE</code></b> (abstract)</td>
+  </tr>
+  <tr style="background-color:#ffffff; color:#000;">
+    <td><b>Description</b></td>
+    <td colspan="2">Abstract base for proxy entries. Subclasses narrow or extend the multiplicity of <code>path</code> as needed. Because inheritance can only narrow constraints, the base declares <code>path</code> as <code>0..*</code> so that <code>PROXY_VALUE</code> can legally restrict it to <code>0..1</code>.</td>
+  </tr>
+  <tr style="background-color:#87CEEB; color:#000;">
+    <td><b>Attributes</b></td>
+    <td><b>Signature</b></td>
+    <td><b>Meaning</b></td>
+  </tr>
+  <tr style="background-color:#ffffff; color:#000;">
+    <td><code>path</code> (0..*)</td>
+    <td><code>EHR_PATH</code></td>
+    <td>One or more archetype paths relative to <code>internal_ref</code>.</td>
+  </tr>
+  <tr style="background-color:#f5f5f5; color:#000;">
+    <td><code>value</code> (0..1)</td>
+    <td><code>DATA_VALUE</code></td>
+    <td>Resolved or hardcoded value.</td>
+  </tr>
+</table>
+
 #### `PROXY_VALUE` class
+
+Inherits from `PROXY_BASE`. Narrows `path` to `0..1`.
 
 <table>
   <tr style="background-color:#87CEEB; color:#000;">
@@ -145,7 +175,7 @@ Inherits from `DATA_VALUE`.
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
     <td><b>Description</b></td>
-    <td colspan="2">Carries a value alongside a reference. With <code>path</code> set, it surfaces a value resolved from <code>internal_ref</code>. Without <code>path</code>, it carries a hardcoded value the modeler populated directly.</td>
+    <td colspan="2">Carries a single value alongside a reference. With <code>path</code> set, it surfaces a value resolved from <code>internal_ref</code>. Without <code>path</code>, it carries a hardcoded value the modeler populated directly.</td>
   </tr>
   <tr style="background-color:#87CEEB; color:#000;">
     <td><b>Attributes</b></td>
@@ -157,11 +187,6 @@ Inherits from `DATA_VALUE`.
     <td><code>EHR_PATH</code></td>
     <td>Archetype path relative to <code>internal_ref</code>. Present when proxying from a linked target.</td>
   </tr>
-  <tr style="background-color:#f5f5f5; color:#000;">
-    <td><code>value</code> (0..1)</td>
-    <td><code>DATA_VALUE</code></td>
-    <td>Resolved or hardcoded value.</td>
-  </tr>
   <tr style="background-color:#87CEEB; color:#000;">
     <td><b>Invariants</b></td>
     <td colspan="2"></td>
@@ -170,6 +195,81 @@ Inherits from `DATA_VALUE`.
     <td colspan="3">
       <ul>
         <li>At least one of <code>path</code> or <code>value</code> is set.</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+#### `PROXY_DEFINITION` class
+
+Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOMED CT), where a concept is composed from named component axes. Each component is a `(term, path)` pair, modeled as a `DEFINITION_COMPONENT`.
+
+<table>
+  <tr style="background-color:#87CEEB; color:#000;">
+    <td><b>CLASS</b></td>
+    <td colspan="2"><b><code>PROXY_DEFINITION</code></b></td>
+  </tr>
+  <tr style="background-color:#ffffff; color:#000;">
+    <td><b>Description</b></td>
+    <td colspan="2">Carries a post-coordinated definition as an ordered list of <code>(term, path)</code> pairs, one per component axis (e.g. finding, laterality, site). <code>internal_ref</code> on the parent <code>DV_REFERENCE</code> identifies the target archetype instance as the root. Each <code>DEFINITION_COMPONENT.path</code> is relative to that root and resolves to the <code>DATA_VALUE</code> of one axis. The inherited <code>value</code> holds the single assembled result.</td>
+  </tr>
+  <tr style="background-color:#87CEEB; color:#000;">
+    <td><b>Attributes</b></td>
+    <td><b>Signature</b></td>
+    <td><b>Meaning</b></td>
+  </tr>
+  <tr style="background-color:#ffffff; color:#000;">
+    <td><code>components</code> (1..*)</td>
+    <td><code>List&lt;DEFINITION_COMPONENT&gt;</code></td>
+    <td>Ordered list of component axes that compose the definition.</td>
+  </tr>
+  <tr style="background-color:#87CEEB; color:#000;">
+    <td><b>Invariants</b></td>
+    <td colspan="2"></td>
+  </tr>
+  <tr style="background-color:#ffffff; color:#000;">
+    <td colspan="3">
+      <ul>
+        <li>At least one <code>components</code> entry is set.</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+#### `DEFINITION_COMPONENT` class
+
+<table>
+  <tr style="background-color:#87CEEB; color:#000;">
+    <td><b>CLASS</b></td>
+    <td colspan="2"><b><code>DEFINITION_COMPONENT</code></b></td>
+  </tr>
+  <tr style="background-color:#ffffff; color:#000;">
+    <td><b>Description</b></td>
+    <td colspan="2">A single <code>(term, path)</code> pair representing one axis of a post-coordinated definition. <code>path</code> is relative to the <code>internal_ref</code> on the parent <code>DV_REFERENCE</code> and resolves to the <code>DATA_VALUE</code> of that axis within the linked archetype instance, e.g. <code>("finding", /data/.../value)</code>, <code>("laterality", /data/.../value)</code>.</td>
+  </tr>
+  <tr style="background-color:#87CEEB; color:#000;">
+    <td><b>Attributes</b></td>
+    <td><b>Signature</b></td>
+    <td><b>Meaning</b></td>
+  </tr>
+  <tr style="background-color:#ffffff; color:#000;">
+    <td><code>term</code> (1..1)</td>
+    <td><code>String</code></td>
+    <td>Label for this component axis, e.g. <code>"finding"</code>, <code>"laterality"</code>, <code>"site"</code>.</td>
+  </tr>
+  <tr style="background-color:#f5f5f5; color:#000;">
+    <td><code>path</code> (0..1)</td>
+    <td><code>EHR_PATH</code></td>
+    <td>Path to the value for this axis, relative to <code>internal_ref</code>. Absent if the component value is hardcoded.</td>
+  </tr>
+  <tr style="background-color:#87CEEB; color:#000;">
+    <td><b>Invariants</b></td>
+    <td colspan="2"></td>
+  </tr>
+  <tr style="background-color:#ffffff; color:#000;">
+    <td colspan="3">
+      <ul>
+        <li>At least one of <code>path</code> or <code>term</code> is set.</li>
       </ul>
     </td>
   </tr>
@@ -215,19 +315,53 @@ Inherits from `DATA_VALUE`.
   </tr>
 </table>
 
-### Archetype constraints
+## Open thought: linked CLUSTER for multi-field references
 
-The constraint logic is standard ADL. Reuse the regex-on-`archetype_id` mechanism that `ARCHETYPE_SLOT` already uses, but apply it to the archetype segment inside `internal_ref`. Add path constraints for each `proxy` entry. Constrain `type` like any other coded value.
+For multi-field references, a CLUSTER with a single `shared_link` is the more natural modeling approach. The modeler defines the fields they need as ELEMENTs inside the CLUSTER — each with its own description, constraints, and terminology bindings — and the link lives once on the CLUSTER, not per field. This maps directly to how modelers already think about CLUSTERs and is far less awkward than multiple parallel `DV_REFERENCE`s.
+
+`shared_link` could also be placed on `ELEMENT` directly, but that is intentionally avoided. Putting a link on every ELEMENT would reproduce the same problem as `LINK` on `LOCATABLE` — modelers can attach references anywhere, constraints become unenforceable, and interoperability breaks down. Keeping `shared_link` on `CLUSTER` only means the archetype structure itself makes the scope of the reference explicit and auditable.
+
+### Sketch: CLUSTER with `shared_link`
+
+<table>
+  <tr style="background-color:#87CEEB; color:#000;">
+    <td><b>CLASS</b></td>
+    <td colspan="2"><b><code>CLUSTER</code></b> (extension)</td>
+  </tr>
+  <tr style="background-color:#ffffff; color:#000;">
+    <td><b>Description</b></td>
+    <td colspan="2">One new optional attribute added. The CLUSTER otherwise behaves as today.</td>
+  </tr>
+  <tr style="background-color:#87CEEB; color:#000;">
+    <td><b>Attributes</b></td>
+    <td><b>Signature</b></td>
+    <td><b>Meaning</b></td>
+  </tr>
+  <tr style="background-color:#ffffff; color:#000;">
+    <td><code>shared_link</code> (0..1)</td>
+    <td><code>DV_REFERENCE</code></td>
+    <td>Link to a source archetype shared by all child ELEMENTs that resolve from it.</td>
+  </tr>
+</table>
+
+## Open points
+
+- **`EHR_PATH` positional indexing**: the standard archetype path grammar has no notation for selecting a specific occurrence of a `0..*` node. AQL uses name predicates (`[at0002, 'name']`), not positional ones. If a path must unambiguously target one occurrence among many, a positional predicate such as `[n]` (e.g. `items[at0002][1]`) would need to be added to the `EHR_PATH` grammar. Without it, paths that pass through `0..*` nodes are ambiguous and cannot be resolved to a single value.
+
+- **Cross-CDR openEHR references**: `internal_ref` scopes to the local EHR and `external_ref` was designed for non-openEHR entities. There is no mechanism to point to a `LOCATABLE` in another openEHR CDR — the location of the remote CDR cannot be expressed. Needs a dedicated use case and requirement.
+
+## ADL examples
+
+### `DV_REFERENCE` — Procedure reason slot
+
+The constraint logic is standard ADL. Reuse the regex-on-`archetype_id` mechanism that `ARCHETYPE_SLOT` already uses, but apply it to the archetype segment inside `internal_ref`. Add path constraints for each `proxy` entry.
 
 Example for the Procedure `reason` slot, which either links a `problem_diagnosis` (proxying diagnosis and severity) or carries a static coded value when nothing exists to link.
-
-ADL 2:
 
 ```adl
 ELEMENT[id3] occurrences matches {0..1} matches {    -- Reason
   value matches {
     DV_REFERENCE[id4] matches {
-      type matches {[at0010]}                        -- "problem_diagnosis_ref"
       internal_ref matches {
         DV_EHR_URI[id5] matches {
           archetype_id matches {/openEHR-EHR-EVALUATION\.problem_diagnosis\.v\d+/}
@@ -249,77 +383,9 @@ ELEMENT[id3] occurrences matches {0..1} matches {    -- Reason
 }
 ```
 
-Reading: `value` accepts either a `DV_REFERENCE` constrained to a `problem_diagnosis` URI with two ordered proxies, or a plain coded value from the reason value set.
+`value` accepts either a `DV_REFERENCE` constrained to a `problem_diagnosis` URI with two ordered proxies, or a plain coded value from the reason value set.
 
-## Open thought: linked CLUSTER for multi-field references
-
-`PROXY_VALUE` carries only `path` and `value`, so it has none of the modeling surface an ELEMENT has (description, constraints, value sets, terminology). For a single proxied value that is fine. For two or more fields from the same source archetype it falls short, and modeling them as separate `DV_REFERENCE`s disconnects fields that belong together.
-
-**Direction**
-
-Model the linked group as a CLUSTER. The CLUSTER carries a `shared_link` to one source archetype (e.g. `problem_diagnosis`). Inside, the modeler picks the ELEMENTs they need (`reason`, `severity`) as specialized clones of the source ELEMENTs, keeping or respec'ing the at-code, description, and constraints locally. At recording time each picked ELEMENT is either resolved from the link or carries a hardcoded value.
-
-Mental model: slot a CLUSTER from another archetype, pick and respec the fields you want. The shared origin lives once, on the CLUSTER, not duplicated per ELEMENT.
-
-**Trade-offs**
-
-- Validation must check that the source path resolves to an ELEMENT, types match, and the proxy is a valid specialization.
-- Conceptual proximity to archetype specialization. Needs clear scoping so the two mechanisms do not bleed into each other.
-- Terminology overlap (source vs proxy codes/text) needs an explicit rule for AQL and UI.
-- Nested proxies need either a ban or specified semantics.
-- Modeling will be messy because multiple valid approaches exist. Not a blocker. Down to the modeler's judgment.
-
-**Net**
-
-`PROXY_VALUE` handles the single-value case now. The linked CLUSTER is the likely direction for multi-field references.
-
-### Sketch: CLUSTER with `shared_link`
-
-`CLUSTER` gets one new optional attribute. Everything else stays as it is today.
-
-<table>
-  <tr style="background-color:#87CEEB; color:#000;">
-    <td><b>CLASS</b></td>
-    <td colspan="2"><b><code>CLUSTER</code></b> (extension)</td>
-  </tr>
-  <tr style="background-color:#ffffff; color:#000;">
-    <td><b>Description</b></td>
-    <td colspan="2">Adds a single shared link to a source archetype. When set, child ELEMENTs may resolve their values from paths inside that link. The CLUSTER otherwise behaves as a normal `CLUSTER`.</td>
-  </tr>
-  <tr style="background-color:#87CEEB; color:#000;">
-    <td><b>Attributes</b></td>
-    <td><b>Signature</b></td>
-    <td><b>Meaning</b></td>
-  </tr>
-  <tr style="background-color:#ffffff; color:#000;">
-    <td><code>shared_link</code> (0..1)</td>
-    <td><code>DV_REFERENCE</code></td>
-    <td>Link to a source archetype shared by all child ELEMENTs that resolve from it.</td>
-  </tr>
-</table>
-
-`ELEMENT` gets one new optional attribute, `source_path`. When set, the value was resolved from the parent CLUSTER's `shared_link` at that path. When unset, the value was hardcoded.
-
-<table>
-  <tr style="background-color:#87CEEB; color:#000;">
-    <td><b>CLASS</b></td>
-    <td colspan="2"><b><code>ELEMENT</code></b> (extension)</td>
-  </tr>
-  <tr style="background-color:#87CEEB; color:#000;">
-    <td><b>Attributes</b></td>
-    <td><b>Signature</b></td>
-    <td><b>Meaning</b></td>
-  </tr>
-  <tr style="background-color:#ffffff; color:#000;">
-    <td><code>source_path</code> (0..1)</td>
-    <td><code>EHR_PATH</code></td>
-    <td>If set, the value was resolved from the parent CLUSTER's <code>shared_link</code> at this path. If unset, the value was hardcoded.</td>
-  </tr>
-</table>
-
-`source_path` doubles as the ADL constraint hook. Modelers declare it in the archetype to say "this ELEMENT is linked to path X of the source", and the same field carries provenance into recorded data so AQL and validators can tell resolved values apart from hardcoded ones.
-
-#### How it works in ADL
+### CLUSTER with `shared_link` — procedure diagnosis link
 
 A `procedure_diagnosis_link` CLUSTER targets `problem_diagnosis` and respec'd `reason` and `severity` ELEMENTs:
 
@@ -353,18 +419,4 @@ CLUSTER[id1] matches {                                          -- procedure_dia
 }
 ```
 
-Reading: the CLUSTER's `shared_link` constrains the link to a `problem_diagnosis`. Each child ELEMENT carries a `source_path` constraint pointing into the linked target. The local `value` constraint defines what the resolved value must look like and what the modeler accepts when hardcoding.
-
-In ADL the constraint pins the path. At recording time the engine fills `ELEMENT.source_path` and the resolved `value`. If the modeler chose to hardcode, `source_path` stays unset and the modeler enters the value directly.
-
-#### Modes at recording time
-
-- `shared_link` set, ELEMENT value resolved from `source_path`. Engine fills the value, validates it against the local constraint, and stores it.
-- `shared_link` unset, ELEMENT carries a hardcoded value. Validated against the local constraint only.
-- Mixed within one CLUSTER is fine. Some ELEMENTs may resolve, others may be hardcoded, depending on what the source provides.
-
-#### Open questions
-
-- Whether `shared_link` should be `DV_REFERENCE` or a stricter type that forbids `proxy` (the CLUSTER replaces that role).
-- Resolution behaviour when the linked target's value at `source_path` no longer satisfies the local constraint.
-- Whether `source_path` on ELEMENT should be enforced as immutable once set, since changing it would silently rebind provenance.
+The CLUSTER's `shared_link` constrains the link to a `problem_diagnosis`. Each child ELEMENT carries a `source_path` constraint pointing into the linked target. The local `value` constraint defines what the resolved value must look like and what the modeler accepts when hardcoding.
