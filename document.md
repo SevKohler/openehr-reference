@@ -118,7 +118,7 @@ Inherits from `DATA_VALUE`.
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
     <td>0..*</td>
-    <td><code>proxy</code>: <code>List&lt;PROXY_VALUE&gt;</code></td>
+    <td><code>proxy</code>: <code>List&lt;PROXY_BASE&gt;</code></td>
     <td>Values surfaced from the target, or hardcoded when no link is set.</td>
   </tr>
   <tr style="background-color:#87CEEB; color:#000;">
