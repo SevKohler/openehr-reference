@@ -15,10 +15,7 @@
 
 \maketitle
 
-
-% ─────────────────────────────────────────────────────────────────────────────
 \section{What is a clinical reference?}
-% ─────────────────────────────────────────────────────────────────────────────
 
 \begin{frame}{What is a clinical reference?}
   Clinical data rarely stands alone. A procedure has a reason. A finding has a site.
@@ -26,7 +23,7 @@
 
   \bigskip
   A \textbf{clinical reference} is a typed pointer from one piece of clinical data
-  to another — inside the same record, or to an external system.
+  to another, inside the same record or to an external system.
 
   \bigskip
   \begin{alertblock}{The question}
@@ -57,9 +54,7 @@
   \end{alertblock}
 \end{frame}
 
-% ─────────────────────────────────────────────────────────────────────────────
 \section{How FHIR solves it}
-% ─────────────────────────────────────────────────────────────────────────────
 
 \begin{frame}{FHIR: \texttt{Reference}}
   FHIR models references as a first-class data type, used \textbf{explicitly}
@@ -76,7 +71,7 @@
 
 \begin{frame}{FHIR: \texttt{CodeableReference}}
   \texttt{CodeableReference} goes one step further: the field may hold
-  \textbf{either} a coded concept \textbf{or} a \texttt{Reference} — or both.
+  \textbf{either} a coded concept \textbf{or} a \texttt{Reference}, or both.
 
   \bigskip
   Example: \texttt{Procedure.reason} can be a free code when nothing is linked,
@@ -89,16 +84,14 @@
 
 \begin{frame}{What FHIR gets right}
   \begin{itemize}
-    \item References are \textbf{explicitly typed} — not free text, not implicit
+    \item References are \textbf{explicitly typed}, not free text, not implicit
     \item The pointer and a coded fallback live \textbf{in the same field}
-    \item References are \textbf{constrainable} per resource field — not attachable everywhere
+    \item References are \textbf{constrainable} per resource field, not attachable everywhere
     \item Interoperability is enforced because the structure is fixed
   \end{itemize}
 \end{frame}
 
-% ─────────────────────────────────────────────────────────────────────────────
 \section{How openEHR handles it today}
-% ─────────────────────────────────────────────────────────────────────────────
 
 \begin{frame}{openEHR: \texttt{LINK}}
   \texttt{LINK} is available on \textbf{every} \texttt{LOCATABLE}. It carries a
@@ -111,22 +104,20 @@
 
 \begin{frame}{openEHR: external references}
   External references are modeled separately in the RM via \texttt{PARTY\_REF},
-  \texttt{OBJECT\_REF}, and related classes — a different mechanism from \texttt{LINK}.
+  \texttt{OBJECT\_REF}, and related classes. A different mechanism from \texttt{LINK}.
 
   \begin{figure}
     \includegraphics[width=0.72\textwidth]{../PARTY.png}
   \end{figure}
 \end{frame}
 
-% ─────────────────────────────────────────────────────────────────────────────
 \section{The problems}
-% ─────────────────────────────────────────────────────────────────────────────
 
 \begin{frame}{Problem 1: \texttt{LINK} is too permissive}
   \begin{itemize}
-    \item \texttt{LINK} can be attached to \textbf{any} \texttt{LOCATABLE} — there
+    \item \texttt{LINK} can be attached to \textbf{any} \texttt{LOCATABLE}. There
           is no way to restrict where it appears
-    \item \texttt{type} is a \textbf{free string} — no enforcement, no terminology
+    \item \texttt{type} is a \textbf{free string}. No enforcement, no terminology
           binding, no interoperability
     \item In practice every team uses it differently, making cross-system querying
           unreliable
@@ -144,7 +135,7 @@
 
   \bigskip
   In openEHR there is no equivalent. A field is either a \texttt{DV\_CODED\_TEXT}
-  or it carries a \texttt{LINK} on the side — two unrelated mechanisms with no
+  or it carries a \texttt{LINK} on the side. Two unrelated mechanisms with no
   shared semantics and no archetype-level constraint tying them together.
 
   \bigskip
@@ -158,9 +149,9 @@
 
   \bigskip
   \begin{itemize}
-    \item Attached to \textbf{every} \texttt{LOCATABLE} — no way to restrict it
+    \item Attached to \textbf{every} \texttt{LOCATABLE}. No way to restrict it
           to specific archetypes or fields
-    \item \texttt{type} is a free string — no terminology binding, no validation
+    \item \texttt{type} is a free string. No terminology binding, no validation
     \item Cannot be placed inside \texttt{ELEMENT.value}, so archetypes cannot
           model a reference as a proper field with constraints
   \end{itemize}
@@ -168,14 +159,14 @@
 
 \begin{frame}{Problem 3b: external references are hard-coded in the RM}
   External references (\texttt{OBJECT\_REF}, \texttt{PARTY\_REF} etc.) are
-  baked into specific RM classes — they are \textbf{not} a general-purpose type.
+  baked into specific RM classes. They are \textbf{not} a general-purpose type.
 
   \bigskip
   \begin{itemize}
     \item Cannot be used inside \texttt{ELEMENT.value} in an archetype
-    \item No overlap with \texttt{LINK} — the two mechanisms cannot substitute
+    \item No overlap with \texttt{LINK}. The two mechanisms cannot substitute
           for each other
-    \item Pointing to e.g. a FHIR resource or an external registry requires
+    \item Pointing to a FHIR resource or an external registry requires
           adding a new hard-coded RM attribute, not a reusable pattern
   \end{itemize}
 
@@ -185,14 +176,14 @@
 \end{frame}
 
 \begin{frame}{Problem 4: no value proxying}
-  FHIR lets a reference surface data from its target inline — the \texttt{display}
+  FHIR lets a reference surface data from its target inline. The \texttt{display}
   field carries a human-readable label resolved from the linked resource.
 
   \bigskip
   In openEHR, if a procedure needs to show the diagnosis name from the linked
   \texttt{problem\_diagnosis}, the only option today is to \textbf{duplicate} the
-  value. There is no mechanism to say ``resolve this value from the target at
-  recording time and store it here.''
+  value. There is no mechanism to say "resolve this value from the target at
+  recording time and store it here."
 
   \bigskip
   Duplication breaks when the source is updated and the copy is not.
@@ -212,17 +203,13 @@
   \end{tabular}
 \end{frame}
 
-% ─────────────────────────────────────────────────────────────────────────────
 \section{Proposal}
-% ─────────────────────────────────────────────────────────────────────────────
 
 \begin{frame}{Proposal}
   % slides to be added
 \end{frame}
 
-% ─────────────────────────────────────────────────────────────────────────────
 \section{Open points}
-% ─────────────────────────────────────────────────────────────────────────────
 
 \begin{frame}{Open points}
   % slides to be added
