@@ -107,60 +107,24 @@
 
 \section{The problems}
 
-\begin{frame}{Problem 1: \texttt{LINK} is too permissive}
+\begin{frame}{Problems: \texttt{LINK}}
   \begin{itemize}
-    \item Attachable to \textbf{any} \texttt{LOCATABLE}, no restrictions
+    \item Attachable to any \texttt{LOCATABLE}, cannot be scoped to a field
     \item \texttt{type} is a free string, no terminology binding or validation
+    \item Cannot be placed inside \texttt{ELEMENT.value}
+    \item No shared abstraction with external references (\texttt{OBJECT\_REF}, \texttt{PARTY\_REF})
     \item Every team uses it differently, cross-system querying breaks
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Problem 2: no coded fallback}
+\begin{frame}{Problems: missing capabilities}
   \begin{itemize}
-    \item No equivalent to \texttt{CodeableReference} in openEHR
-    \item \texttt{DV\_CODED\_TEXT} and \texttt{LINK} are two unrelated mechanisms
-    \item Cannot express "reference or code" in a single constrained field
+    \item No way to express a reference and a coded fallback in one field
+    \item External references are RM-level only, not usable in archetypes
+    \item No mechanism to surface values from a linked target inline
+    \item Duplicating values is the only workaround, duplicates go stale
+    \item Post-coordinated terms have no dedicated structure in either standard
   \end{itemize}
-\end{frame}
-
-\begin{frame}{Problem 3a: internal references are uncontrolled}
-  \begin{itemize}
-    \item \texttt{LINK} is the only internal reference mechanism
-    \item Attached to every \texttt{LOCATABLE}, cannot be scoped to a field
-    \item Cannot be placed inside \texttt{ELEMENT.value}
-    \item No archetype-level constraints possible
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Problem 3b: external references are hard-coded in the RM}
-  \begin{itemize}
-    \item \texttt{OBJECT\_REF}, \texttt{PARTY\_REF} are RM-level only, not general-purpose
-    \item Cannot be used inside \texttt{ELEMENT.value}
-    \item No shared abstraction with \texttt{LINK}
-    \item Each new external target type requires a new hard-coded RM attribute
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Problem 4: no value proxying}
-  \begin{itemize}
-    \item No mechanism to surface a value from a linked target inline
-    \item Only option today is to duplicate the value
-    \item Duplicates go stale when the source is updated
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Summary: what is missing}
-  \begin{tabular}{lcc}
-    \toprule
-    Capability & FHIR & openEHR today \\
-    \midrule
-    Typed, constrainable reference     & \checkmark & \texttimes \\
-    Usable inside an archetype field   & \checkmark & \texttimes \\
-    Internal + external in one type    & \checkmark & \texttimes \\
-    Coded fallback in same field       & \checkmark & \texttimes \\
-    Value proxying from target         & (display)  & \texttimes \\
-    \bottomrule
-  \end{tabular}
 \end{frame}
 
 \section{Proposal}
