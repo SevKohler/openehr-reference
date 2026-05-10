@@ -41,26 +41,20 @@
 \section{How FHIR solves it}
 
 \begin{frame}{FHIR: \texttt{Reference}}
-  FHIR models references as a first-class data type, used \textbf{explicitly}
-  wherever a resource field points to another resource.
-
-  \bigskip
-  \texttt{Reference} carries: a literal reference string, a type, a logical
-  identifier, and a human-readable display label.
-
+  \begin{itemize}
+    \item First-class data type, used explicitly per resource field
+    \item Carries: reference string, type, logical identifier, display label
+  \end{itemize}
   \begin{figure}
-        \includegraphics[width=1\textwidth]{../Reference.png}
+    \includegraphics[width=1\textwidth]{../Reference.png}
   \end{figure}
 \end{frame}
 
 \begin{frame}{FHIR: \texttt{CodeableReference}}
-  \texttt{CodeableReference} goes one step further: the field may hold
-  \textbf{either} a coded concept \textbf{or} a \texttt{Reference}, or both.
-
-  \bigskip
-  Example: \texttt{Procedure.reason} can be a free code when nothing is linked,
-  or a reference to a \texttt{Condition} resource when one exists.
-
+  \begin{itemize}
+    \item Holds a coded concept, a \texttt{Reference}, or both in one field
+    \item \texttt{Procedure.reason}: free code when nothing linked, reference when it exists
+  \end{itemize}
   \begin{figure}
     \includegraphics[width=1\textwidth]{../CodeableReference.png}
   \end{figure}
@@ -68,109 +62,91 @@
 
 \begin{frame}{What FHIR gets right}
   \begin{itemize}
-    \item References are \textbf{explicitly typed}, not free text, not implicit
-    \item The pointer and a coded fallback live \textbf{in the same field}
-    \item References are \textbf{constrainable} per resource field, not attachable everywhere
-    \item Interoperability is enforced because the structure is fixed
+    \item Explicitly typed, not free text
+    \item Pointer and coded fallback in the same field
+    \item Constrainable per field, not attachable everywhere
+    \item Fixed structure enforces interoperability
   \end{itemize}
 \end{frame}
 
 \section{How openEHR handles it today}
 
 \begin{frame}{openEHR: \texttt{LINK}}
-  \texttt{LINK} is available on \textbf{every} \texttt{LOCATABLE}. It carries a
-  meaning, a type (free string), and a target URI.
-
+  \begin{itemize}
+    \item Available on every \texttt{LOCATABLE}
+    \item Carries meaning, type (free string), and target URI
+  \end{itemize}
   \begin{figure}
     \includegraphics[width=0.9\textwidth]{../LINKS.png}
   \end{figure}
 \end{frame}
 
 \begin{frame}{openEHR: external references}
-  External references are modeled separately in the RM via \texttt{PARTY\_REF},
-  \texttt{OBJECT\_REF}, and related classes. A different mechanism from \texttt{LINK}.
+  \begin{itemize}
+    \item Modeled separately via \texttt{PARTY\_REF}, \texttt{OBJECT\_REF} and related classes
+    \item A different mechanism from \texttt{LINK}
+  \end{itemize}
 
   \begin{figure}
     \includegraphics[width=1\textwidth]{../PARTY.png}
   \end{figure}
 \end{frame}
 
+\begin{frame}{Problem 5: post-coordinated terms}
+  \begin{itemize}
+    \item Neither FHIR nor openEHR has a standard way to represent post-coordinated expressions
+    \item Example: "Malignant neoplasm of right testis" composed from finding + laterality + site
+    \item FHIR has no dedicated structure for it
+    \item openEHR has no dedicated structure for it
+    \item Currently handled ad-hoc or not at all
+  \end{itemize}
+  \begin{alertblock}{Open in both}
+    Post-coordination is an unsolved problem across standards.
+  \end{alertblock}
+\end{frame}
+
 \section{The problems}
 
 \begin{frame}{Problem 1: \texttt{LINK} is too permissive}
   \begin{itemize}
-    \item \texttt{LINK} can be attached to \textbf{any} \texttt{LOCATABLE}. There
-          is no way to restrict where it appears
-    \item \texttt{type} is a \textbf{free string}. No enforcement, no terminology
-          binding, no interoperability
-    \item In practice every team uses it differently, making cross-system querying
-          unreliable
+    \item Attachable to \textbf{any} \texttt{LOCATABLE}, no restrictions
+    \item \texttt{type} is a free string, no terminology binding or validation
+    \item Every team uses it differently, cross-system querying breaks
   \end{itemize}
-
-  \bigskip
-  \begin{alertblock}{}
-    The same chaos that motivated typed references in FHIR exists in openEHR today,
-    just dressed differently.
-  \end{alertblock}
 \end{frame}
 
 \begin{frame}{Problem 2: no coded fallback}
-  FHIR's \texttt{CodeableReference} lets a field hold a code \textbf{or} a reference.
-
-  \bigskip
-  In openEHR there is no equivalent. A field is either a \texttt{DV\_CODED\_TEXT}
-  or it carries a \texttt{LINK} on the side. Two unrelated mechanisms with no
-  shared semantics and no archetype-level constraint tying them together.
-
-  \bigskip
-  Example: \texttt{Procedure.reason} should accept a static code when no linked
-  diagnosis exists, and a typed reference when one does. Today this cannot be
-  expressed cleanly in one field.
+  \begin{itemize}
+    \item No equivalent to \texttt{CodeableReference} in openEHR
+    \item \texttt{DV\_CODED\_TEXT} and \texttt{LINK} are two unrelated mechanisms
+    \item Cannot express "reference or code" in a single constrained field
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Problem 3a: internal references are uncontrolled}
-  \texttt{LINK} is the only mechanism for pointing to something inside the EHR.
-
-  \bigskip
   \begin{itemize}
-    \item Attached to \textbf{every} \texttt{LOCATABLE}. No way to restrict it
-          to specific archetypes or fields
-    \item \texttt{type} is a free string. No terminology binding, no validation
-    \item Cannot be placed inside \texttt{ELEMENT.value}, so archetypes cannot
-          model a reference as a proper field with constraints
+    \item \texttt{LINK} is the only internal reference mechanism
+    \item Attached to every \texttt{LOCATABLE}, cannot be scoped to a field
+    \item Cannot be placed inside \texttt{ELEMENT.value}
+    \item No archetype-level constraints possible
   \end{itemize}
 \end{frame}
 
 \begin{frame}{Problem 3b: external references are hard-coded in the RM}
-  External references (\texttt{OBJECT\_REF}, \texttt{PARTY\_REF} etc.) are
-  baked into specific RM classes. They are \textbf{not} a general-purpose type.
-
-  \bigskip
   \begin{itemize}
-    \item Cannot be used inside \texttt{ELEMENT.value} in an archetype
-    \item No overlap with \texttt{LINK}. The two mechanisms cannot substitute
-          for each other
-    \item Pointing to a FHIR resource or an external registry requires
-          adding a new hard-coded RM attribute, not a reusable pattern
+    \item \texttt{OBJECT\_REF}, \texttt{PARTY\_REF} are RM-level only, not general-purpose
+    \item Cannot be used inside \texttt{ELEMENT.value}
+    \item No shared abstraction with \texttt{LINK}
+    \item Each new external target type requires a new hard-coded RM attribute
   \end{itemize}
-
-  \bigskip
-  Result: internal and external references are \textbf{two entirely separate
-  worlds} with no shared abstraction.
 \end{frame}
 
 \begin{frame}{Problem 4: no value proxying}
-  FHIR lets a reference surface data from its target inline. The \texttt{display}
-  field carries a human-readable label resolved from the linked resource.
-
-  \bigskip
-  In openEHR, if a procedure needs to show the diagnosis name from the linked
-  \texttt{problem\_diagnosis}, the only option today is to \textbf{duplicate} the
-  value. There is no mechanism to say "resolve this value from the target at
-  recording time and store it here."
-
-  \bigskip
-  Duplication breaks when the source is updated and the copy is not.
+  \begin{itemize}
+    \item No mechanism to surface a value from a linked target inline
+    \item Only option today is to duplicate the value
+    \item Duplicates go stale when the source is updated
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Summary: what is missing}
