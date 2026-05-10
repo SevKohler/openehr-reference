@@ -200,18 +200,18 @@ Inherits from `PROXY_BASE`. Narrows `path` to `0..1`.
   </tr>
 </table>
 
-#### `PROXY_DEFINITION` class
+#### `PROXY_EXPRESSION` class
 
-Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOMED CT), where a concept is composed from named component axes. Each component is a `(term, path)` pair, modeled as a `DEFINITION_COMPONENT`.
+Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOMED CT), where a concept is composed from named component axes. Each component is a `(term, path)` pair, modeled as a `EXPRESSION_DEFINITION`.
 
 <table>
   <tr style="background-color:#87CEEB; color:#000;">
     <td><b>CLASS</b></td>
-    <td colspan="2"><b><code>PROXY_DEFINITION</code></b></td>
+    <td colspan="2"><b><code>PROXY_EXPRESSION</code></b></td>
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
     <td><b>Description</b></td>
-    <td colspan="2">Carries a post-coordinated definition as an ordered list of <code>(term, path)</code> pairs, one per component axis (e.g. finding, laterality, site). <code>internal_ref</code> on the parent <code>DV_REFERENCE</code> identifies the target archetype instance as the root. Each <code>DEFINITION_COMPONENT.path</code> is relative to that root and resolves to the <code>DATA_VALUE</code> of one axis. The inherited <code>value</code> holds the single assembled result.</td>
+    <td colspan="2">Carries a post-coordinated definition as an ordered list of <code>(term, path)</code> pairs, one per component axis (e.g. finding, laterality, site). <code>internal_ref</code> on the parent <code>DV_REFERENCE</code> identifies the target archetype instance as the root. Each <code>EXPRESSION_DEFINITION.path</code> is relative to that root and resolves to the <code>DATA_VALUE</code> of one axis. The inherited <code>value</code> holds the single assembled result.</td>
   </tr>
   <tr style="background-color:#87CEEB; color:#000;">
     <td><b>Attributes</b></td>
@@ -220,7 +220,7 @@ Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOM
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
     <td>1..*</td>
-    <td><code>components</code>: <code>List&lt;DEFINITION_COMPONENT&gt;</code></td>
+    <td><code>components</code>: <code>List&lt;EXPRESSION_DEFINITION&gt;</code></td>
     <td>Ordered list of component axes that compose the definition.</td>
   </tr>
   <tr style="background-color:#87CEEB; color:#000;">
@@ -236,12 +236,12 @@ Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOM
   </tr>
 </table>
 
-#### `DEFINITION_COMPONENT` class
+#### `EXPRESSION_DEFINITION` class
 
 <table>
   <tr style="background-color:#87CEEB; color:#000;">
     <td><b>CLASS</b></td>
-    <td colspan="2"><b><code>DEFINITION_COMPONENT</code></b></td>
+    <td colspan="2"><b><code>EXPRESSION_DEFINITION</code></b></td>
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
     <td><b>Description</b></td>
