@@ -23,12 +23,9 @@
     \item Procedure $\rightarrow$ reason, Device $\rightarrow$ entry, Composition $\rightarrow$ encounter
     \item Target may be inside the same EHR or in an external system
     \item A \textbf{clinical reference} is that typed pointer
+    \item  How do you model it so it is typed, constrainable, and interoperable?
   \end{itemize}
 
-  \bigskip
-  \begin{alertblock}{The question}
-    How do you model it so it is typed, constrainable, and interoperable?
-  \end{alertblock}
 \end{frame}
 
 \begin{frame}{A concrete example}
@@ -37,13 +34,9 @@
     \item Linked \texttt{problem\_diagnosis} exists: point to it, surface diagnosis code inline
     \item Nothing linked: fall back to a coded value from a value set
     \item Both cases belong in the same field, constrained by the archetype
+    \item No single mechanism covers this. Modelers duplicate the value, use a free-text \texttt{LINK} nobody queries, or leave the field disconnected.
   \end{itemize}
-
-  \bigskip
-  \begin{alertblock}{Today in openEHR}
-    No single mechanism covers this. Modelers duplicate the value, use a free-text \texttt{LINK} nobody queries, or leave the field disconnected.
-  \end{alertblock}
-c\end{frame}
+\end{frame}
 
 \section{How FHIR solves it}
 
