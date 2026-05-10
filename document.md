@@ -177,29 +177,6 @@ Inherits from `DATA_VALUE`.
 
 `EHR_PATH` is a new RM primitive. Constrained string validated against the archetype path grammar (`/segment[at-code]/...`).
 
-#### `OBJECT_REF` class (revised)
-
-<table>
-  <tr style="background-color:#87CEEB; color:#000;">
-    <td><b>CLASS</b></td>
-    <td colspan="2"><b><code>OBJECT_REF</code></b></td>
-  </tr>
-  <tr style="background-color:#ffffff; color:#000;">
-    <td><b>Description</b></td>
-    <td colspan="2">Class describing a reference to another object, which may exist locally or be maintained outside the current namespace.</td>
-  </tr>
-  <tr style="background-color:#87CEEB; color:#000;">
-    <td><b>Attributes</b></td>
-    <td><b>Signature</b></td>
-    <td><b>Meaning</b></td>
-  </tr>
-  <tr style="background-color:#ffffff; color:#000;">
-    <td><code>id</code> (1..1)</td>
-    <td><code>OBJECT_ID</code></td>
-    <td>Globally unique id of an object, regardless of where it is stored.</td>
-  </tr>
-</table>
-
 #### `DV_EHR_URI` class (revised)
 
 <table>
