@@ -112,11 +112,6 @@ Inherits from `DATA_VALUE`.
     <td>Pointer to an external entity.</td>
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
-    <td><code>type</code> (0..1)</td>
-    <td><code>DV_CODED_TEXT</code></td>
-    <td>Constrains what the reference points to (e.g. <code>fhir_location</code>, <code>openehr_evaluation</code>). Extensible value set: a standard set ships with the spec, implementations may add codes.</td>
-  </tr>
-  <tr style="background-color:#f5f5f5; color:#000;">
     <td><code>display</code> (0..1)</td>
     <td><code>DV_TEXT</code></td>
     <td>Human-readable label for the target.</td>
@@ -181,6 +176,67 @@ Inherits from `DATA_VALUE`.
 </table>
 
 `EHR_PATH` is a new RM primitive. Constrained string validated against the archetype path grammar (`/segment[at-code]/...`).
+
+#### `OBJECT_REF` class (revised)
+
+<table>
+  <tr style="background-color:#87CEEB; color:#000;">
+    <td><b>CLASS</b></td>
+    <td colspan="2"><b><code>OBJECT_REF</code></b></td>
+  </tr>
+  <tr style="background-color:#ffffff; color:#000;">
+    <td><b>Description</b></td>
+    <td colspan="2">Class describing a reference to another object, which may exist locally or be maintained outside the current namespace.</td>
+  </tr>
+  <tr style="background-color:#87CEEB; color:#000;">
+    <td><b>Attributes</b></td>
+    <td><b>Signature</b></td>
+    <td><b>Meaning</b></td>
+  </tr>
+  <tr style="background-color:#ffffff; color:#000;">
+    <td><code>id</code> (1..1)</td>
+    <td><code>OBJECT_ID</code></td>
+    <td>Globally unique id of an object, regardless of where it is stored.</td>
+  </tr>
+</table>
+
+#### `DV_EHR_URI` class (revised)
+
+<table>
+  <tr style="background-color:#87CEEB; color:#000;">
+    <td><b>CLASS</b></td>
+    <td colspan="2"><b><code>DV_EHR_URI</code></b></td>
+  </tr>
+  <tr style="background-color:#ffffff; color:#000;">
+    <td><b>Description</b></td>
+    <td colspan="2">A URI pointing to a <code>LOCATABLE</code> inside an EHR, using the <code>ehr://</code> scheme.</td>
+  </tr>
+  <tr style="background-color:#87CEEB; color:#000;">
+    <td><b>Attributes</b></td>
+    <td><b>Signature</b></td>
+    <td><b>Meaning</b></td>
+  </tr>
+  <tr style="background-color:#ffffff; color:#000;">
+    <td><code>value</code> (1..1)</td>
+    <td><code>String</code></td>
+    <td>The EHR URI. Must use the <code>ehr://</code> scheme.</td>
+  </tr>
+  <tr style="background-color:#f5f5f5; color:#000;">
+    <td><code>namespace</code> (1..1)</td>
+    <td><code>String</code></td>
+    <td>Namespace to which this identifier belongs in the local system context (and possibly in any other openEHR compliant environment) e.g. terminology, demographic. Legal values are: <code>"local"</code>, <code>"unknown"</code>, or a string matching <code>[a-zA-Z][a-zA-Z0-9_.:\/&?=+-]*</code>.</td>
+  </tr>
+  <tr style="background-color:#ffffff; color:#000;">
+    <td><code>type</code> (1..1)</td>
+    <td><code>String</code></td>
+    <td>Name of the class (concrete or abstract) of object to which this identifier type refers, e.g. <code>PARTY</code>, <code>PERSON</code>, <code>EVALUATION</code>. Use <code>ANY</code> to indicate that any type is accepted.</td>
+  </tr>
+  <tr style="background-color:#f5f5f5; color:#000;">
+    <td><code>archetype_id</code> (0..1)</td>
+    <td><code>String</code></td>
+    <td>Constrains the archetype of the target <code>LOCATABLE</code>. Validated as an archetype id regex at constraint time.</td>
+  </tr>
+</table>
 
 ### Archetype constraints
 
