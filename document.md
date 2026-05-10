@@ -128,9 +128,8 @@ Inherits from `DATA_VALUE`.
   <tr style="background-color:#ffffff; color:#000;">
     <td colspan="3">
       <ul>
-        <li>At most one of <code>internal_ref</code> or <code>external_ref</code> is set.</li>
         <li>At least one of <code>internal_ref</code>, <code>external_ref</code>, or <code>proxy</code> is present.</li>
-        <li>A <code>PROXY_VALUE.path</code> may only be set when <code>internal_ref</code> is set.</li>
+        <li><code>internal_ref</code> and <code>external_ref</code> cannot both be set.</li>
       </ul>
     </td>
   </tr>
