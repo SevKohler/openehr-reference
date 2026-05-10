@@ -178,33 +178,12 @@
 
 \section{Open points}
 
-\begin{frame}{Open point: \texttt{EHR\_PATH} positional indexing}
+\begin{frame}{Open points}
   \begin{itemize}
-    \item Standard archetype path grammar has no positional predicate for \texttt{0..*} nodes
-    \item AQL uses name predicates \texttt{[at0002, 'name']}, not position
-    \item Paths through multi-valued nodes are ambiguous without an index
-    \item Proposal: allow \texttt{[n]} positional predicates, e.g. \texttt{items[at0002][1]}
-    \item Needs explicit extension to the \texttt{EHR\_PATH} grammar
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Open point: cross-CDR openEHR references}
-  \begin{itemize}
-    \item \texttt{internal\_ref} scopes to the local EHR only
-    \item \texttt{external\_ref} was designed for non-openEHR entities
-    \item No mechanism to point to a \texttt{LOCATABLE} in another openEHR CDR
-    \item Location of the remote CDR cannot be expressed in either type
-    \item Needs a dedicated use case and a new reference mechanism
-  \end{itemize}
-\end{frame>
-
-\begin{frame}{Open point: \texttt{CLUSTER} \texttt{shared\_link} type}
-  \begin{itemize}
-    \item Should \texttt{shared\_link} be typed as \texttt{DV\_REFERENCE} or a stricter subtype?
-    \item \texttt{DV\_REFERENCE} allows \texttt{proxy}, but the CLUSTER already replaces that role
-    \item A stricter type would forbid \texttt{proxy} on \texttt{shared\_link} explicitly
-    \item Resolution behaviour when linked target value no longer satisfies local constraint
-    \item Should \texttt{source\_path} on \texttt{ELEMENT} be immutable once set?
+    \item \texttt{EHR\_PATH} has no positional predicate for \texttt{0..*} nodes, paths are ambiguous
+    \item No mechanism to reference a \texttt{LOCATABLE} in another openEHR CDR
+    \item Should \texttt{shared\_link} forbid \texttt{proxy} via a stricter subtype of \texttt{DV\_REFERENCE}?
+    \item Resolution behaviour when linked target no longer satisfies local constraint
   \end{itemize}
 \end{frame}
 
