@@ -18,16 +18,16 @@
 \section{What is a clinical reference?}
 
 \begin{frame}{What is a clinical reference?}
-  Clinical data rarely stands alone. A procedure has a reason. A finding has a site.
-  A device belongs to an entry. A composition belongs to an encounter.
-
-  \bigskip
-  A \textbf{clinical reference} is a typed pointer from one piece of clinical data
-  to another, inside the same record or to an external system.
+  \begin{itemize}
+    \item Clinical data points to other clinical data
+    \item Procedure $\rightarrow$ reason, Device $\rightarrow$ entry, Composition $\rightarrow$ encounter
+    \item Target may be inside the same EHR or in an external system
+    \item A \textbf{clinical reference} is that typed pointer
+  \end{itemize}
 
   \bigskip
   \begin{alertblock}{The question}
-    How do you model that pointer so it is typed, constrainable, and interoperable?
+    How do you model it so it is typed, constrainable, and interoperable?
   \end{alertblock}
 \end{frame}
 
