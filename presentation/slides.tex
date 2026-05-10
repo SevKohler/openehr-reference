@@ -32,25 +32,16 @@
 \end{frame}
 
 \begin{frame}{A concrete example}
-  A \textbf{Procedure} archetype has a \texttt{reason} field.
-
-  \bigskip
   \begin{itemize}
-    \item If a linked \texttt{problem\_diagnosis} exists in the EHR $\rightarrow$
-          the field should \textbf{point to it} and optionally surface the diagnosis
-          code inline
-    \item If nothing is linked yet $\rightarrow$ the field should fall back to a
-          \textbf{static coded value} from a value set
+    \item \texttt{Procedure.reason} should accept a typed reference or a static code
+    \item Linked \texttt{problem\_diagnosis} exists: point to it, surface diagnosis code inline
+    \item Nothing linked: fall back to a coded value from a value set
+    \item Both cases belong in the same field, constrained by the archetype
   \end{itemize}
 
   \bigskip
-  Both cases belong in the \textbf{same field}, constrained by the archetype,
-  not bolted on via a side-channel.
-
-  \bigskip
   \begin{alertblock}{Today in openEHR}
-    No single mechanism covers this. Modelers either duplicate the value, use a
-    free-text \texttt{LINK} nobody queries, or leave the field disconnected.
+    No single mechanism covers this. Modelers duplicate the value, use a free-text \texttt{LINK} nobody queries, or leave the field disconnected.
   \end{alertblock}
 \end{frame}
 
