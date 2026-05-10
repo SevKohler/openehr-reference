@@ -118,7 +118,7 @@ Inherits from `DATA_VALUE`.
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
     <td>0..*</td>
-    <td><code>proxy</code>: <code>List&lt;PROXY_BASE&gt;</code></td>
+    <td><code>proxy</code>: <code>List&lt;PROXY&gt;</code></td>
     <td>Values surfaced from the target, or hardcoded when no link is set.</td>
   </tr>
   <tr style="background-color:#87CEEB; color:#000;">
@@ -135,12 +135,12 @@ Inherits from `DATA_VALUE`.
   </tr>
 </table>
 
-#### `PROXY_BASE` class
+#### `PROXY` class
 
 <table>
   <tr style="background-color:#87CEEB; color:#000;">
     <td><b>CLASS</b></td>
-    <td colspan="2"><b><code>PROXY_BASE</code></b> (abstract)</td>
+    <td colspan="2"><b><code>PROXY</code></b> (abstract)</td>
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
     <td><b>Description</b></td>
@@ -165,7 +165,7 @@ Inherits from `DATA_VALUE`.
 
 #### `PROXY_VALUE` class
 
-Inherits from `PROXY_BASE`. Narrows `path` to `0..1`.
+Inherits from `PROXY`. Narrows `path` to `0..1`.
 
 <table>
   <tr style="background-color:#87CEEB; color:#000;">
@@ -201,7 +201,7 @@ Inherits from `PROXY_BASE`. Narrows `path` to `0..1`.
 
 #### `PROXY_EXPRESSION` class
 
-Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOMED CT), where a concept is composed from named component axes. Each component is a `(term, path)` pair, modeled as a `EXPRESSION_DEFINITION`.
+Inherits from `PROXY`. Intended for post-coordinated expressions (e.g. SNOMED CT), where a concept is composed from named component axes. Each component is a `(term, path)` pair, modeled as a `EXPRESSION_DEFINITION`.
 
 <table>
   <tr style="background-color:#87CEEB; color:#000;">
