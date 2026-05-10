@@ -349,6 +349,10 @@ For multi-field references, a CLUSTER with a single `shared_link` is the more na
 
 - **Cross-CDR openEHR references**: `internal_ref` scopes to the local EHR and `external_ref` was designed for non-openEHR entities. There is no mechanism to point to a `LOCATABLE` in another openEHR CDR — the location of the remote CDR cannot be expressed. Needs a dedicated use case and requirement.
 
+- **Deprecation of `LINK`**: `DV_REFERENCE` replaces the clinical use of `LINK` for typed, field-scoped references. Whether `LINK` should be deprecated, kept for non-clinical structural use, or removed from `LOCATABLE` is an open governance question.
+
+- **Relationship to `external_ref` / `OBJECT_REF` / `PARTY_REF`**: `DV_REFERENCE.external_ref` reuses `OBJECT_REF` to cover non-openEHR entities. The existing standalone `OBJECT_REF` and `PARTY_REF` on RM classes remain unchanged. The open question is whether they should eventually be unified under `DV_REFERENCE`, or kept separate as RM-level structural references that do not need archetype-level constraint.
+
 ## ADL examples
 
 ### `DV_REFERENCE` — Procedure reason slot
