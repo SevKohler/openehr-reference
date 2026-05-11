@@ -487,11 +487,21 @@ As a JSON instance:
         {
           "_type": "EXPRESSION_DEFINITION",
           "term": { "terminology_id": "snomed", "code_string": "272741003" },
-          "code": { "terminology_id": "snomed", "code_string": "24028007" }
+          "path": "/data[at0001]/items[at0005]/value"
         }
       ]
     }
   ]
+}
+```
+
+For a static axis (e.g. laterality fixed at modeling time rather than resolved from the archetype), `code` replaces `path`:
+
+```json
+{
+  "_type": "EXPRESSION_DEFINITION",
+  "term": { "terminology_id": "snomed", "code_string": "272741003" },
+  "code": { "terminology_id": "snomed", "code_string": "24028007" }
 }
 ```
 
