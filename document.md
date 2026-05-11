@@ -196,7 +196,7 @@ Inherits from `PROXY_BASE`. Narrows `path` to `0..1`.
 
 #### `PROXY_EXPRESSION` class
 
-Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOMED CT), where a concept is composed from refinement axes. Each axis is an `EXPRESSION_DEFINITION` carrying an `attribute` (`CODE_PHRASE` for the SNOMED CT refinement attribute, the AS OF / `:` part), joined by AND (`,`), and either a `path` into the linked archetype or a hardcoded `code` (`CODE_PHRASE`) for the attribute value.
+Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOMED CT), where a concept is refined by a set of attribute-value axes. Each axis is an `EXPRESSION_DEFINITION` with an `attribute` holding the SCG operator (`:` = AS OF for the first axis, `,` = AND for each subsequent axis), a `code` holding the SNOMED CT attribute, and a `path` resolving the attribute value from the linked archetype.
 
 <table>
   <tr style="background-color:#87CEEB; color:#000;">
@@ -205,7 +205,7 @@ Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOM
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
     <td><b>Description</b></td>
-    <td colspan="2">Carries a post-coordinated definition as an ordered list of <code>EXPRESSION_DEFINITION</code> entries, one per refinement axis. Each entry has an <code>attribute</code> (<code>CODE_PHRASE</code> for the SNOMED CT refinement attribute, the AS OF / <code>:</code> part) and either a <code>path</code> resolving the value dynamically from <code>internal_ref</code>, or a hardcoded <code>code</code> (<code>CODE_PHRASE</code>) for static values. Axes are joined by AND (<code>,</code>). The inherited <code>value</code> holds the single assembled result.</td>
+    <td colspan="2">Carries a post-coordinated definition as an ordered list of <code>EXPRESSION_DEFINITION</code> entries, one per refinement axis. Each entry has an <code>attribute</code> (SCG operator: <code>":"</code> = AS OF for the first axis, <code>","</code> = AND for subsequent axes), a <code>code</code> (<code>CODE_PHRASE</code> for the SNOMED CT attribute, e.g. <code>272741003|Laterality|</code>), and a <code>path</code> resolving the attribute value from <code>internal_ref</code>. The inherited <code>value</code> holds the single assembled result.</td>
   </tr>
   <tr style="background-color:#87CEEB; color:#000;">
     <td><b>Attributes</b></td>
@@ -239,7 +239,7 @@ Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOM
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
     <td><b>Description</b></td>
-    <td colspan="2">A single refinement axis of a SNOMED CT post-coordinated expression. The <code>attribute</code> is the SNOMED CT attribute (the <em>AS OF</em> / <code>:</code> part, e.g. <em>Malignant neoplasm AS OF Finding site = ...</em>). Multiple <code>EXPRESSION_DEFINITION</code> entries in one <code>PROXY_EXPRESSION</code> are joined by AND (<code>,</code>). The value for the axis is supplied either dynamically via <code>path</code> or as a hardcoded <code>code</code>.</td>
+    <td colspan="2">A single refinement axis of a SNOMED CT post-coordinated expression. <code>attribute</code> holds the SCG operator: <code>:</code> (AS OF — the first refinement) or <code>,</code> (AND — each additional refinement). <code>code</code> holds the SNOMED CT attribute being applied (e.g. <code>272741003|Laterality|</code>). <code>path</code> resolves the attribute value from the linked archetype instance.</td>
   </tr>
   <tr style="background-color:#87CEEB; color:#000;">
     <td><b>Attributes</b></td>
@@ -249,17 +249,17 @@ Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOM
   <tr style="background-color:#ffffff; color:#000;">
     <td>1..1</td>
     <td><code>attribute</code>: <code>CODE_PHRASE</code></td>
-    <td>SNOMED CT attribute identifying the refinement axis — the <em>AS OF</em> (<code>:</code>) part of the expression. Left-hand side of <code>=</code>. Multiple axes are joined by AND (<code>,</code>). Example: <code>363346000|Malignant neoplasm|:<strong>363698007|Finding site|</strong>=64033007|Kidney structure|,<strong>272741003|Laterality|</strong>=24028007|Right|</code>.</td>
+    <td>SCG operator for this axis. <code>code_string</code> is either <code>":"</code> (AS OF — first refinement) or <code>","</code> (AND — subsequent refinement).</td>
   </tr>
   <tr style="background-color:#f5f5f5; color:#000;">
-    <td>0..1</td>
-    <td><code>path</code>: <code>EHR_PATH</code></td>
-    <td>Path to the value for this axis, relative to <code>internal_ref</code>. Absent if the component value is hardcoded via <code>code</code>.</td>
+    <td>1..1</td>
+    <td><code>code</code>: <code>CODE_PHRASE</code></td>
+    <td>The SNOMED CT attribute applied in this axis, e.g. <code>363698007|Finding site|</code> or <code>272741003|Laterality|</code>.</td>
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
     <td>0..1</td>
-    <td><code>code</code>: <code>CODE_PHRASE</code></td>
-    <td>Hardcoded value for this axis when no <code>path</code> is available, e.g. <code>24028007|Right (qualifier value)|</code>. Used for static components whose value is fixed at modeling time.</td>
+    <td><code>path</code>: <code>EHR_PATH</code></td>
+    <td>Path to the attribute value, relative to <code>internal_ref</code>. Resolves dynamically from the linked archetype instance.</td>
   </tr>
   <tr style="background-color:#87CEEB; color:#000;">
     <td><b>Invariants</b></td>
@@ -268,7 +268,7 @@ Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOM
   <tr style="background-color:#ffffff; color:#000;">
     <td colspan="3">
       <ul>
-        <li>Exactly one of <code>path</code> or <code>code</code> is set.</li>
+        <li><code>path</code> is set.</li>
       </ul>
     </td>
   </tr>
@@ -481,12 +481,14 @@ As a JSON instance:
       "components": [
         {
           "_type": "EXPRESSION_DEFINITION",
-          "attribute": { "terminology_id": "snomed", "code_string": "363698007" },
+          "attribute": { "terminology_id": "snomed", "code_string": ":" },
+          "code": { "terminology_id": "snomed", "code_string": "363698007" },
           "path": "/data[at0001]/items[at0002]/value"
         },
         {
           "_type": "EXPRESSION_DEFINITION",
-          "attribute": { "terminology_id": "snomed", "code_string": "272741003" },
+          "attribute": { "terminology_id": "snomed", "code_string": "," },
+          "code": { "terminology_id": "snomed", "code_string": "272741003" },
           "path": "/data[at0001]/items[at0005]/value"
         }
       ]
@@ -500,8 +502,9 @@ For a static axis (e.g. laterality fixed at modeling time rather than resolved f
 ```json
 {
   "_type": "EXPRESSION_DEFINITION",
-  "term": { "terminology_id": "snomed", "code_string": "272741003" },
-  "code": { "terminology_id": "snomed", "code_string": "24028007" }
+  "attribute": { "terminology_id": "snomed", "code_string": "," },
+  "code": { "terminology_id": "snomed", "code_string": "272741003" },
+  "path": "/data[at0001]/items[at0005]/value"
 }
 ```
 
