@@ -202,6 +202,47 @@
   \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]{Instance: internal reference}
+\footnotesize
+\begin{verbatim}
+{ "_type": "DV_REFERENCE",
+  "internal_ref": {
+    "_type": "DV_EHR_URI",
+    "value": "ehr://ehr-id/.../items[at0003]"
+  },
+  "display": { "_type": "DV_TEXT",
+               "value": "Malignant neoplasm of right kidney" },
+  "proxy": [{
+    "_type": "PROXY_VALUE",
+    "path": "/data[at0001]/items[at0002]/value",
+    "value": { "_type": "DV_CODED_TEXT",
+               "defining_code": { "terminology_id": "snomed",
+                                  "code_string": "363346000" }}
+  }]
+}
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Instance: external reference}
+\footnotesize
+\begin{verbatim}
+{ "_type": "DV_REFERENCE",
+  "external_ref": {
+    "_type": "OBJECT_REF",
+    "namespace": "fhir",
+    "type": "Organization",
+    "id": {
+      "_type": "GENERIC_ID",
+      "value": "https://fhir.example.org/Organization/123",
+      "scheme": "https://fhir.example.org"
+    }
+  },
+  "display": { "_type": "DV_TEXT",
+               "value": "City Oncology Centre" }
+}
+\end{verbatim}
+\end{frame}
+
 \begin{frame}{Two kinds of \texttt{DV\_REFERENCE}}
   \begin{columns}
     \column{0.48\textwidth}
