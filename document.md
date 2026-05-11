@@ -451,6 +451,55 @@ CLUSTER[id1] matches {                                          -- procedure_dia
 
 The CLUSTER's `shared_link` constrains the link to a `problem_diagnosis`. Each child ELEMENT carries a `source_path` constraint pointing into the linked target. The local `value` constraint defines what the resolved value must look like and what the modeler accepts when hardcoding.
 
+### `DV_REFERENCE` — Procedure reason as JSON instance
+
+Two cases for `Procedure.reason`: linked (reference to a recorded `problem_diagnosis`) and unlinked (static coded fallback).
+
+**Linked case** — `internal_ref` points to a `problem_diagnosis` EVALUATION; `proxy` surfaces the diagnosis code:
+
+```json
+{
+  "_type": "DV_REFERENCE",
+  "internal_ref": {
+    "_type": "DV_EHR_URI",
+    "value": "ehr://ehr-id/compositions/comp-id/content[at0001]/data[at0002]/items[at0003]"
+  },
+  "display": {
+    "_type": "DV_TEXT",
+    "value": "Malignant neoplasm of right kidney"
+  },
+  "proxy": [
+    {
+      "_type": "PROXY_VALUE",
+      "path": "/data[at0001]/items[at0002]/value",
+      "value": {
+        "_type": "DV_CODED_TEXT",
+        "value": "Malignant neoplasm of right kidney",
+        "defining_code": { "terminology_id": "snomed", "code_string": "363346000" }
+      }
+    }
+  ]
+}
+```
+
+**Unlinked case** — no `problem_diagnosis` recorded; `proxy` carries a hardcoded coded value from the reason value set:
+
+```json
+{
+  "_type": "DV_REFERENCE",
+  "proxy": [
+    {
+      "_type": "PROXY_VALUE",
+      "value": {
+        "_type": "DV_CODED_TEXT",
+        "value": "Cancer",
+        "defining_code": { "terminology_id": "local", "code_string": "at0010" }
+      }
+    }
+  ]
+}
+```
+
 ### `PROXY_EXPRESSION` — post-coordinated diagnosis on a procedure
 
 This example records "Malignant neoplasm of right kidney" as a SNOMED CT post-coordinated expression, assembled from a linked `problem_diagnosis` archetype instance. The focus concept is hardcoded; the finding site is resolved dynamically from the linked archetype; laterality is a static hardcoded value.
