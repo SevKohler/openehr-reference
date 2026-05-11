@@ -442,7 +442,7 @@ A `Procedure.performer` pointing to an `Organization` held in a FHIR registry ou
   "_type": "DV_REFERENCE",
   "external_ref": {
     "_type": "OBJECT_REF",
-    "namespace": "fhir_organization",
+    "namespace": "fhir",
     "type": "Organization",
     "id": {
       "_type": "GENERIC_ID",
