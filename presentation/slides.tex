@@ -121,7 +121,7 @@
 \begin{frame}{Problems: post-coordinated terms}
   \begin{itemize}
     \item Neither FHIR nor openEHR has a standard way to represent post-coordinated expressions
-    \item Example: "Radiation therapy for lung cancer" composed from treatment + indication
+    \item Example: "Radiation therapy for kidney cancer" composed from treatment + indication
     \item FHIR has no dedicated structure for it
     \item openEHR has no dedicated structure for it
     \item Currently handled ad-hoc or not at all
@@ -215,7 +215,7 @@
     \item \texttt{PROXY\_EXPRESSION} extends \texttt{PROXY\_BASE} for composed concepts
     \item Holds a list of \texttt{EXPRESSION\_DEFINITION} entries
     \item Each component is a \texttt{(term, path)} pair: one axis of the definition
-    \item Example: treatment + indication compose "Radiation therapy for lung cancer"
+    \item Example: treatment + indication compose "Radiation therapy for kidney cancer"
     \item Single assembled \texttt{value} inherited from \texttt{PROXY\_BASE}
   \end{itemize}
 \end{frame}
@@ -229,12 +229,12 @@
 
 \begin{frame}{Example: post-coordinated expression}
   \begin{itemize}
-    \item Goal: record \textit{"Malignant neoplasm of right lung"} from a \texttt{problem\_diagnosis} EVALUATION
+    \item Goal: record \textit{"Malignant neoplasm of right kidney"} from a \texttt{problem\_diagnosis} EVALUATION
     \item \texttt{PROXY\_EXPRESSION} on a \texttt{DV\_REFERENCE} with \texttt{internal\_ref} to that instance
     \item \texttt{EXPRESSION\_DEFINITION} entries:
       \begin{itemize}
         \item \texttt{finding} $\rightarrow$ \texttt{/data/.../problem\_diagnosis\_name} $\Rightarrow$ \textsc{snomed} 363346000 \textbar{} Malignant neoplasm \textbar
-        \item \texttt{site} $\rightarrow$ \texttt{/data/.../body\_site\_name} $\Rightarrow$ \textsc{snomed} 39607008 \textbar{} Lung structure \textbar
+        \item \texttt{site} $\rightarrow$ \texttt{/data/.../body\_site\_name} $\Rightarrow$ \textsc{snomed} 64033007 \textbar{} Kidney structure \textbar
         \item \texttt{laterality} $\rightarrow$ \texttt{/data/.../laterality} $\Rightarrow$ \textsc{snomed} 24028007 \textbar{} Right \textbar
       \end{itemize}
     \item Assembled \texttt{value}: post-coordinated expression stored as a single \texttt{DV\_CODED\_TEXT}
