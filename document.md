@@ -254,7 +254,7 @@ Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOM
   <tr style="background-color:#ffffff; color:#000;">
     <td>1..1</td>
     <td><code>term</code>: <code>CODE_PHRASE</code></td>
-    <td>Typed identifier for this component axis, e.g. <code>363698007|Finding site (attribute)|</code> or <code>272741003|Laterality (attribute)|</code> from SNOMED CT.</td>
+    <td>SNOMED CT attribute that refines the focus concept — corresponds to the left-hand side of an <code>=</code> pair in a SNOMED CT Expression Language refinement. The <code>:</code> operator means "such as" (e.g. <em>Malignant neoplasm <strong>such as</strong> Finding site = Kidney structure</em>); multiple attributes are joined by <code>,</code> (AND). Examples: <code>363698007|Finding site (attribute)|</code>, <code>272741003|Laterality (attribute)|</code>.</td>
   </tr>
   <tr style="background-color:#f5f5f5; color:#000;">
     <td>0..1</td>
