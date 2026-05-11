@@ -196,7 +196,7 @@ Inherits from `PROXY_BASE`. Narrows `path` to `0..1`.
 
 #### `PROXY_EXPRESSION` class
 
-Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOMED CT), where a concept is composed from named component axes. Each component is an `EXPRESSION_DEFINITION` carrying a `term` (`CODE_PHRASE` for the SNOMED CT attribute), and either a `path` into the linked archetype or a hardcoded `code` (`CODE_PHRASE`) for static values.
+Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOMED CT), where a concept is composed from refinement axes. Each axis is an `EXPRESSION_DEFINITION` carrying an `attribute` (`CODE_PHRASE` for the SNOMED CT refinement attribute, the AS OF / `:` part), joined by AND (`,`), and either a `path` into the linked archetype or a hardcoded `code` (`CODE_PHRASE`) for the attribute value.
 
 <table>
   <tr style="background-color:#87CEEB; color:#000;">
@@ -205,7 +205,7 @@ Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOM
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
     <td><b>Description</b></td>
-    <td colspan="2">Carries a post-coordinated definition as an ordered list of <code>EXPRESSION_DEFINITION</code> entries, one per component axis. Each entry has a <code>term</code> (<code>CODE_PHRASE</code> for the SNOMED CT attribute) and either a <code>path</code> relative to <code>internal_ref</code> resolving the value dynamically, or a hardcoded <code>code</code> (<code>CODE_PHRASE</code>) for static components. The inherited <code>value</code> holds the single assembled result.</td>
+    <td colspan="2">Carries a post-coordinated definition as an ordered list of <code>EXPRESSION_DEFINITION</code> entries, one per refinement axis. Each entry has an <code>attribute</code> (<code>CODE_PHRASE</code> for the SNOMED CT refinement attribute, the AS OF / <code>:</code> part) and either a <code>path</code> resolving the value dynamically from <code>internal_ref</code>, or a hardcoded <code>code</code> (<code>CODE_PHRASE</code>) for static values. Axes are joined by AND (<code>,</code>). The inherited <code>value</code> holds the single assembled result.</td>
   </tr>
   <tr style="background-color:#87CEEB; color:#000;">
     <td><b>Attributes</b></td>
@@ -239,7 +239,7 @@ Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOM
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
     <td><b>Description</b></td>
-    <td colspan="2">A single component axis of a post-coordinated definition. Each axis carries a typed <code>term</code> (<code>CODE_PHRASE</code>) identifying the SNOMED CT attribute role, and either a <code>path</code> resolving the value from the linked archetype instance or a hardcoded <code>code</code> (<code>CODE_PHRASE</code>) for static values.</td>
+    <td colspan="2">A single refinement axis of a SNOMED CT post-coordinated expression. The <code>attribute</code> is the SNOMED CT attribute (the <em>AS OF</em> / <code>:</code> part, e.g. <em>Malignant neoplasm AS OF Finding site = ...</em>). Multiple <code>EXPRESSION_DEFINITION</code> entries in one <code>PROXY_EXPRESSION</code> are joined by AND (<code>,</code>). The value for the axis is supplied either dynamically via <code>path</code> or as a hardcoded <code>code</code>.</td>
   </tr>
   <tr style="background-color:#87CEEB; color:#000;">
     <td><b>Attributes</b></td>
@@ -248,8 +248,8 @@ Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOM
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
     <td>1..1</td>
-    <td><code>term</code>: <code>CODE_PHRASE</code></td>
-    <td>Attribute from a clinical expression language such as SNOMED CT. Represents the refinement axis — the left-hand side of <code>=</code> in an expression refinement, where <code>:</code> means "such as". Example: <code>363346000|Malignant neoplastic disease|:363698007|Finding site|=64033007|Kidney structure|</code>.</td>
+    <td><code>attribute</code>: <code>CODE_PHRASE</code></td>
+    <td>SNOMED CT attribute identifying the refinement axis — the <em>AS OF</em> (<code>:</code>) part of the expression. Left-hand side of <code>=</code>. Multiple axes are joined by AND (<code>,</code>). Example: <code>363346000|Malignant neoplasm|:<strong>363698007|Finding site|</strong>=64033007|Kidney structure|,<strong>272741003|Laterality|</strong>=24028007|Right|</code>.</td>
   </tr>
   <tr style="background-color:#f5f5f5; color:#000;">
     <td>0..1</td>
@@ -481,12 +481,12 @@ As a JSON instance:
       "components": [
         {
           "_type": "EXPRESSION_DEFINITION",
-          "term": { "terminology_id": "snomed", "code_string": "363698007" },
+          "attribute": { "terminology_id": "snomed", "code_string": "363698007" },
           "path": "/data[at0001]/items[at0002]/value"
         },
         {
           "_type": "EXPRESSION_DEFINITION",
-          "term": { "terminology_id": "snomed", "code_string": "272741003" },
+          "attribute": { "terminology_id": "snomed", "code_string": "272741003" },
           "path": "/data[at0001]/items[at0005]/value"
         }
       ]
