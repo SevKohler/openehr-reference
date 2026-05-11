@@ -461,33 +461,37 @@ The SNOMED CT Expression Language representation is:
   272741003|Laterality|=24028007|Right|
 ```
 
-In ADL:
+As a JSON instance:
 
-```adl
-ELEMENT[id3] occurrences matches {0..1} matches {    -- Diagnosis (post-coordinated)
-  value matches {
-    DV_REFERENCE[id4] matches {
-      internal_ref matches {
-        DV_EHR_URI[id5] matches {
-          archetype_id matches {/openEHR-EHR-EVALUATION\.problem_diagnosis\.v\d+/}
+```json
+{
+  "_type": "DV_REFERENCE",
+  "internal_ref": {
+    "_type": "DV_EHR_URI",
+    "value": "ehr://ehr-id/compositions/comp-id/content[at0001]/data[at0002]/items[at0003]"
+  },
+  "proxy": [
+    {
+      "_type": "PROXY_EXPRESSION",
+      "value": {
+        "_type": "DV_CODED_TEXT",
+        "value": "363346000|Malignant neoplastic disease|:363698007|Finding site|=64033007|Kidney structure|,272741003|Laterality|=24028007|Right|",
+        "defining_code": { "terminology_id": "snomed", "code_string": "363346000" }
+      },
+      "components": [
+        {
+          "_type": "EXPRESSION_DEFINITION",
+          "term": { "terminology_id": "snomed", "code_string": "363698007" },
+          "path": "/data[at0001]/items[at0002]/value"
+        },
+        {
+          "_type": "EXPRESSION_DEFINITION",
+          "term": { "terminology_id": "snomed", "code_string": "272741003" },
+          "code": { "terminology_id": "snomed", "code_string": "24028007" }
         }
-      }
-      proxy matches {
-        PROXY_EXPRESSION[id6] matches {
-          components cardinality matches {2..2; ordered} matches {
-            EXPRESSION_DEFINITION[id7] matches {
-              term matches {[snomed::363698007]}          -- Finding site (attribute)
-              path matches {"/data[at0001]/items[at0002]/value"}  -- body site name
-            }
-            EXPRESSION_DEFINITION[id8] matches {
-              term matches {[snomed::272741003]}          -- Laterality (attribute)
-              code matches {[snomed::24028007]}           -- Right (hardcoded)
-            }
-          }
-        }
-      }
+      ]
     }
-  }
+  ]
 }
 ```
 
