@@ -446,7 +446,7 @@ A `Procedure.performer` pointing to an `Organization` held in a FHIR registry ou
     "type": "Organization",
     "id": {
       "_type": "GENERIC_ID",
-      "value": "Organization/123",
+      "value": "https://fhir.example.org/Organization/123",
       "scheme": "https://fhir.example.org"
     }
   },
