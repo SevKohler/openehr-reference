@@ -4,6 +4,31 @@
 \usepackage{appendixnumberbeamer}
 \usepackage{booktabs}
 \usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{jsonkey}{RGB}{0,0,180}
+\definecolor{jsonstring}{RGB}{0,128,0}
+\definecolor{jsonbg}{RGB}{245,245,245}
+
+\lstdefinelanguage{json}{
+  basicstyle=\ttfamily\scriptsize,
+  backgroundcolor=\color{jsonbg},
+  stringstyle=\color{jsonstring},
+  morestring=[b]",
+  literate=
+    *{:}{{{\color{black}{:}}}}{1}
+     {\{}{{{\color{black}{\{}}}}{1}
+     {\}}{{{\color{black}{\}}}}}{1}
+     {[}{{{\color{black}{[}}}}{1}
+     {]}{{{\color{black}{]}}}}{1},
+  keywords={true,false,null},
+  keywordstyle=\color{jsonkey}\bfseries,
+  showstringspaces=false,
+  breaklines=true,
+  frame=single,
+  rulecolor=\color{gray!40},
+}
 
 \title{Clinical References in openEHR}
 \subtitle{Problems and a proposal}
@@ -203,8 +228,7 @@
 \end{frame}
 
 \begin{frame}[fragile]{Instance: internal reference}
-\footnotesize
-\begin{verbatim}
+\begin{lstlisting}[language=json]
 { "_type": "DV_REFERENCE",
   "internal_ref": {
     "_type": "DV_EHR_URI",
@@ -220,12 +244,11 @@
                                   "code_string": "363346000" }}
   }]
 }
-\end{verbatim}
+\end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Instance: external reference}
-\footnotesize
-\begin{verbatim}
+\begin{lstlisting}[language=json]
 { "_type": "DV_REFERENCE",
   "external_ref": {
     "_type": "OBJECT_REF",
@@ -240,7 +263,7 @@
   "display": { "_type": "DV_TEXT",
                "value": "City Oncology Centre" }
 }
-\end{verbatim}
+\end{lstlisting}
 \end{frame}
 
 \begin{frame}{Two kinds of \texttt{DV\_REFERENCE}}
