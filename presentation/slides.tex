@@ -102,19 +102,6 @@
   \end{figure}
 \end{frame}
 
-\begin{frame}{Problem 5: post-coordinated terms}
-  \begin{itemize}
-    \item Neither FHIR nor openEHR has a standard way to represent post-coordinated expressions
-    \item Example: "Radiation therapy for lung cancer" composed from treatment + indication
-    \item FHIR has no dedicated structure for it
-    \item openEHR has no dedicated structure for it
-    \item Currently handled ad-hoc or not at all
-  \end{itemize}
-  \begin{alertblock}{Open in both}
-    Post-coordination is an unsolved problem across standards.
-  \end{alertblock}
-\end{frame}
-
 \section{The problems}
 
 \begin{frame}{Problems: \texttt{LINK}}
@@ -125,6 +112,19 @@
     \item No shared abstraction with external references (\texttt{OBJECT\_REF}, \texttt{PARTY\_REF})
     \item Every team uses it differently, cross-system querying breaks
   \end{itemize}
+\end{frame}
+
+\begin{frame}{Problems: post-coordinated terms}
+  \begin{itemize}
+    \item Neither FHIR nor openEHR has a standard way to represent post-coordinated expressions
+    \item Example: "Radiation therapy for lung cancer" composed from treatment + indication
+    \item FHIR has no dedicated structure for it
+    \item openEHR has no dedicated structure for it
+    \item Currently handled ad-hoc or not at all
+  \end{itemize}
+  \begin{alertblock}{Open in both}
+    Post-coordination is an unsolved problem across standards.
+  \end{alertblock}
 \end{frame}
 
 \begin{frame}{Problems: missing capabilities}
