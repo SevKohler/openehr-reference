@@ -210,6 +210,27 @@
   \end{itemize}
 \end{frame}
 
+\section{FHIR alignment}
+
+\begin{frame}{FHIR alignment: \texttt{Reference}}
+  \begin{itemize}
+    \item FHIR \texttt{Reference}: \texttt{reference} (URL) + \texttt{identifier} (logical) + \texttt{display}
+    \item \texttt{internal\_ref} $\leftrightarrow$ FHIR \texttt{reference}: resolvable pointer to the target
+    \item \texttt{external\_ref} $\leftrightarrow$ FHIR \texttt{identifier}: logical id for an external entity
+    \item \texttt{display} maps directly
+    \item FHIR allows both at once; \texttt{DV\_REFERENCE} enforces mutual exclusion by invariant
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{FHIR alignment: \texttt{CodeableReference}}
+  \begin{itemize}
+    \item \texttt{CodeableReference}: code \textbf{or} \texttt{Reference} in one field
+    \item Coded case: \texttt{proxy} holds a hardcoded \texttt{DV\_CODED\_TEXT}, no link set
+    \item Reference case: \texttt{internal\_ref}/\texttt{external\_ref} set, \texttt{proxy} resolved from target
+    \item Identical to \texttt{Procedure.reason}: same field, two valid states
+  \end{itemize}
+\end{frame}
+
 \section{Open points}
 
 \begin{frame}{Open points}
