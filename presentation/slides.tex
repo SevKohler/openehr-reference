@@ -93,7 +93,7 @@
 \begin{frame}{Problem 5: post-coordinated terms}
   \begin{itemize}
     \item Neither FHIR nor openEHR has a standard way to represent post-coordinated expressions
-    \item Example: "Fracture of right distal radius" composed from finding + laterality + site
+    \item Example: "Appendectomy due to acute appendicitis" composed from procedure + reason
     \item FHIR has no dedicated structure for it
     \item openEHR has no dedicated structure for it
     \item Currently handled ad-hoc or not at all
@@ -198,7 +198,7 @@
     \item \texttt{PROXY\_EXPRESSION} extends \texttt{PROXY\_BASE} for composed concepts
     \item Holds a list of \texttt{EXPRESSION\_DEFINITION} entries
     \item Each component is a \texttt{(term, path)} pair: one axis of the definition
-    \item Example: finding + laterality + site compose "Fracture of right distal radius"
+    \item Example: procedure + reason compose "Appendectomy due to acute appendicitis"
     \item Single assembled \texttt{value} inherited from \texttt{PROXY\_BASE}
   \end{itemize}
 \end{frame}
@@ -211,13 +211,12 @@
 
 \begin{frame}{Example: post-coordinated expression}
   \begin{itemize}
-    \item Goal: record "Fracture of right distal radius" as a composed concept
-    \item \texttt{PROXY\_EXPRESSION} on a \texttt{DV\_REFERENCE} with \texttt{internal\_ref} to a fracture archetype instance
+    \item Goal: record "Appendectomy due to acute appendicitis" as a composed concept
+    \item \texttt{PROXY\_EXPRESSION} on a \texttt{DV\_REFERENCE} with \texttt{internal\_ref} to a \texttt{procedure} ACTION instance
     \item \texttt{EXPRESSION\_DEFINITION} entries:
       \begin{itemize}
-        \item \texttt{finding} $\rightarrow$ path to fracture code
-        \item \texttt{laterality} $\rightarrow$ path to "right"
-        \item \texttt{site} $\rightarrow$ path to "distal radius"
+        \item \texttt{procedure} $\rightarrow$ path to appendectomy code
+        \item \texttt{reason} $\rightarrow$ path to acute appendicitis code
       \end{itemize}
     \item Assembled \texttt{value}: the composed term stored as a single \texttt{DATA\_VALUE}
   \end{itemize}
