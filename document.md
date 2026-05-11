@@ -378,6 +378,8 @@ The ADL `Procedure.reason` example makes this explicit: the `ELEMENT.value` cons
 
 - **Legacy data**: deprecate `LINK`; how to handle existing `OBJECT_REF` / `PARTY_REF` data is unresolved.
 
+- **`DV_EHR_URI` `namespace` and `type` fields**: it is unclear whether these are needed on `DV_EHR_URI` at the instance level, since the target class and archetype can already be constrained at modeling time via `archetype_id` in ADL. If the archetype fully expresses the constraint, carrying `namespace` and `type` at runtime is redundant. Needs a decision on whether they serve a validation or runtime-resolution purpose that ADL cannot cover.
+
 - **`PROXY_EXPRESSION` component ordering**: the `components` list is ordered (AS OF first, AND following), but JSON does not enforce array ordering in all implementations. An explicit `index` field on `EXPRESSION_DEFINITION` may be needed to guarantee the correct expression language serialization order regardless of the serialization format.
 
 ## Examples
@@ -393,8 +395,6 @@ Two cases for `Procedure.reason`: linked (reference to a recorded `problem_diagn
   "_type": "DV_REFERENCE",
   "internal_ref": {
     "_type": "DV_EHR_URI",
-    "namespace": "openEHR",
-    "type": "EVALUATION",
     "value": "ehr://ehr-id/compositions/comp-id/content[at0001]/data[at0002]/items[at0003]"
   },
   "display": {
@@ -476,8 +476,6 @@ As a JSON instance:
   "_type": "DV_REFERENCE",
   "internal_ref": {
     "_type": "DV_EHR_URI",
-    "namespace": "openEHR",
-    "type": "EVALUATION",
     "value": "ehr://ehr-id/compositions/comp-id/content[at0001]/data[at0002]/items[at0003]"
   },
   "proxy": [
