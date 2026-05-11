@@ -229,14 +229,15 @@
 
 \begin{frame}{Example: post-coordinated expression}
   \begin{itemize}
-    \item Goal: record "Radiation therapy for lung cancer" as a composed concept
-    \item \texttt{PROXY\_EXPRESSION} on a \texttt{DV\_REFERENCE} with \texttt{internal\_ref} to a \texttt{procedure} ACTION instance
+    \item Goal: record \textit{"Malignant neoplasm of right lung"} from a \texttt{problem\_diagnosis} EVALUATION
+    \item \texttt{PROXY\_EXPRESSION} on a \texttt{DV\_REFERENCE} with \texttt{internal\_ref} to that instance
     \item \texttt{EXPRESSION\_DEFINITION} entries:
       \begin{itemize}
-        \item \texttt{treatment} $\rightarrow$ path to radiation therapy code
-        \item \texttt{indication} $\rightarrow$ path to lung cancer code
+        \item \texttt{finding} $\rightarrow$ \texttt{/data/.../problem\_diagnosis\_name} $\Rightarrow$ \textsc{snomed} 363346000 \textbar{} Malignant neoplasm \textbar
+        \item \texttt{site} $\rightarrow$ \texttt{/data/.../body\_site\_name} $\Rightarrow$ \textsc{snomed} 39607008 \textbar{} Lung structure \textbar
+        \item \texttt{laterality} $\rightarrow$ \texttt{/data/.../laterality} $\Rightarrow$ \textsc{snomed} 24028007 \textbar{} Right \textbar
       \end{itemize}
-    \item Assembled \texttt{value}: the composed term stored as a single \texttt{DATA\_VALUE}
+    \item Assembled \texttt{value}: post-coordinated expression stored as a single \texttt{DV\_CODED\_TEXT}
   \end{itemize}
 \end{frame}
 
