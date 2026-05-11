@@ -196,7 +196,7 @@ Inherits from `PROXY_BASE`. Narrows `path` to `0..1`.
 
 #### `PROXY_EXPRESSION` class
 
-Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOMED CT), where a concept is refined by a set of attribute-value axes. Each axis is an `EXPRESSION_DEFINITION` with an `attribute` holding the SCG operator (`:` = AS OF for the first axis, `,` = AND for each subsequent axis), a `code` holding the SNOMED CT attribute, and a `path` resolving the attribute value from the linked archetype.
+Inherits from `PROXY_BASE`. Intended for post-coordinated expressions where a concept is refined by a set of attribute-value axes, as defined by clinical expression languages such as SNOMED CT Compositional Grammar (SCG) or ICD-11 post-coordination. Each axis is an `EXPRESSION_DEFINITION` with an `attribute` holding the expression language operator (e.g. `:` = AS OF, `,` = AND in SCG), a `code` holding the terminology attribute, and a `path` resolving the attribute value from the linked archetype.
 
 <table>
   <tr style="background-color:#87CEEB; color:#000;">
@@ -205,7 +205,7 @@ Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOM
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
     <td><b>Description</b></td>
-    <td colspan="2">Carries a post-coordinated definition as an ordered list of <code>EXPRESSION_DEFINITION</code> entries, one per refinement axis. Each entry has an <code>attribute</code> (SCG operator: <code>":"</code> = AS OF for the first axis, <code>","</code> = AND for subsequent axes), a <code>code</code> (<code>CODE_PHRASE</code> for the SNOMED CT attribute, e.g. <code>272741003|Laterality|</code>), and a <code>path</code> resolving the attribute value from <code>internal_ref</code>. The inherited <code>value</code> holds the single assembled result.</td>
+    <td colspan="2">Carries a post-coordinated definition as an ordered list of <code>EXPRESSION_DEFINITION</code> entries, one per refinement axis. Each entry has an <code>attribute</code> holding the expression language operator (e.g. <code>":"</code> = AS OF, <code>","</code> = AND in SNOMED CT SCG), a <code>code</code> (<code>CODE_PHRASE</code> for the terminology attribute, e.g. <code>272741003|Laterality|</code>), and a <code>path</code> resolving the attribute value from <code>internal_ref</code>. The inherited <code>value</code> holds the single assembled result.</td>
   </tr>
   <tr style="background-color:#87CEEB; color:#000;">
     <td><b>Attributes</b></td>
@@ -239,7 +239,7 @@ Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOM
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
     <td><b>Description</b></td>
-    <td colspan="2">A single refinement axis of a SNOMED CT post-coordinated expression. <code>attribute</code> holds the SCG operator: <code>:</code> (AS OF — the first refinement) or <code>,</code> (AND — each additional refinement). <code>code</code> holds the SNOMED CT attribute being applied (e.g. <code>272741003|Laterality|</code>). <code>path</code> resolves the attribute value from the linked archetype instance.</td>
+    <td colspan="2">A single refinement axis of a post-coordinated expression. <code>attribute</code> holds the operator defined by the expression language (e.g. <code>:</code> = AS OF and <code>,</code> = AND in SNOMED CT SCG). <code>code</code> holds the terminology attribute being applied (e.g. <code>272741003|Laterality|</code>). <code>path</code> resolves the attribute value from the linked archetype instance.</td>
   </tr>
   <tr style="background-color:#87CEEB; color:#000;">
     <td><b>Attributes</b></td>
@@ -249,12 +249,12 @@ Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOM
   <tr style="background-color:#ffffff; color:#000;">
     <td>1..1</td>
     <td><code>attribute</code>: <code>CODE_PHRASE</code></td>
-    <td>SCG operator for this axis. <code>code_string</code> is either <code>":"</code> (AS OF — first refinement) or <code>","</code> (AND — subsequent refinement).</td>
+    <td>Operator defined by the expression language for this axis (e.g. <code>":"</code> = AS OF for the first refinement, <code>","</code> = AND for subsequent refinements in SNOMED CT SCG). Other expression languages may define different operators.</td>
   </tr>
   <tr style="background-color:#f5f5f5; color:#000;">
     <td>1..1</td>
     <td><code>code</code>: <code>CODE_PHRASE</code></td>
-    <td>The SNOMED CT attribute applied in this axis, e.g. <code>363698007|Finding site|</code> or <code>272741003|Laterality|</code>.</td>
+    <td>The terminology attribute applied in this axis (e.g. <code>363698007|Finding site|</code> or <code>272741003|Laterality|</code> in SNOMED CT SCG).</td>
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
     <td>0..1</td>
@@ -378,7 +378,7 @@ The ADL `Procedure.reason` example makes this explicit: the `ELEMENT.value` cons
 
 - **Legacy data**: deprecate `LINK`; how to handle existing `OBJECT_REF` / `PARTY_REF` data is unresolved.
 
-- **`PROXY_EXPRESSION` component ordering**: the `components` list is ordered (AS OF first, AND following), but JSON does not enforce array ordering in all implementations. An explicit `index` field on `EXPRESSION_DEFINITION` may be needed to guarantee the correct SCG serialization order regardless of the serialization format.
+- **`PROXY_EXPRESSION` component ordering**: the `components` list is ordered (AS OF first, AND following), but JSON does not enforce array ordering in all implementations. An explicit `index` field on `EXPRESSION_DEFINITION` may be needed to guarantee the correct expression language serialization order regardless of the serialization format.
 
 ## ADL examples
 
