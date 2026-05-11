@@ -431,6 +431,30 @@ Two cases for `Procedure.reason`: linked (reference to a recorded `problem_diagn
 }
 ```
 
+### `DV_REFERENCE` — External reference to a FHIR Organization
+
+A `Procedure.performer` pointing to an `Organization` held in a FHIR registry outside the EHR:
+
+```json
+{
+  "_type": "DV_REFERENCE",
+  "external_ref": {
+    "_type": "OBJECT_REF",
+    "namespace": "fhir_organization",
+    "type": "Organization",
+    "id": {
+      "_type": "GENERIC_ID",
+      "value": "Organization/123",
+      "scheme": "https://fhir.example.org"
+    }
+  },
+  "display": {
+    "_type": "DV_TEXT",
+    "value": "City Oncology Centre"
+  }
+}
+```
+
 ### `PROXY_EXPRESSION` — post-coordinated diagnosis on a procedure
 
 This example records "Malignant neoplasm of right kidney" as a SNOMED CT post-coordinated expression, assembled from a linked `problem_diagnosis` archetype instance. The focus concept is hardcoded; the finding site is resolved dynamically from the linked archetype; laterality is a static hardcoded value.
