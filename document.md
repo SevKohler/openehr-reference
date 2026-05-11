@@ -378,6 +378,8 @@ The ADL `Procedure.reason` example makes this explicit: the `ELEMENT.value` cons
 
 - **Legacy data**: deprecate `LINK`; how to handle existing `OBJECT_REF` / `PARTY_REF` data is unresolved.
 
+- **`PROXY_EXPRESSION` component ordering**: the `components` list is ordered (AS OF first, AND following), but JSON does not enforce array ordering in all implementations. An explicit `index` field on `EXPRESSION_DEFINITION` may be needed to guarantee the correct SCG serialization order regardless of the serialization format.
+
 ## ADL examples
 
 ### `DV_REFERENCE` — Procedure reason slot
