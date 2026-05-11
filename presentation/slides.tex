@@ -127,28 +127,6 @@
 
 \section{Proposal}
 
-\begin{frame}{Two kinds of \texttt{DV\_REFERENCE}}
-  \begin{columns}
-    \column{0.48\textwidth}
-      \textbf{RM-level (hardcoded)}
-      \begin{itemize}
-        \item Typed attribute baked into the RM class
-        \item Example: \texttt{EVENT\_CONTEXT.encounter}
-        \item Scope and type fixed by the spec, no archetype control
-        \item Reserved for structural slots every composition shares
-      \end{itemize}
-    \column{0.48\textwidth}
-      \textbf{Archetype-level (explicit)}
-      \begin{itemize}
-        \item \texttt{DV\_REFERENCE} inside \texttt{ELEMENT.value}
-        \item Defined and constrained by the modeler per archetype
-        \item Target type, archetype id, proxy paths all constrainable
-        \item The normal case for all clinical references
-      \end{itemize}
-  \end{columns}
-  \vspace{1em}
-  Nothing in between — a reference is either a fixed RM attribute or an archetyped element.
-\end{frame}
 
 \begin{frame}{Proposal: \texttt{DV\_REFERENCE}}
   \begin{itemize}
@@ -192,6 +170,29 @@
     \item One field, one constraint, two valid states
   \end{itemize}
 \end{frame}
+
+\begin{frame}{Two kinds of \texttt{DV\_REFERENCE}}
+  \begin{columns}
+    \column{0.48\textwidth}
+      \textbf{RM-level (hardcoded)}
+      \begin{itemize}
+        \item Typed attribute baked into the RM class
+        \item Example: \texttt{EVENT\_CONTEXT.encounter}
+        \item Scope and type fixed by the spec, no archetype control
+        \item Reserved for structural slots every composition shares
+      \end{itemize}
+    \column{0.48\textwidth}
+      \textbf{Archetype-level (explicit)}
+      \begin{itemize}
+        \item \texttt{DV\_REFERENCE} inside \texttt{ELEMENT.value}
+        \item Defined and constrained by the modeler per archetype
+        \item Target type, archetype id, proxy paths all constrainable
+        \item The normal case for all clinical references
+      \end{itemize}
+  \end{columns}
+
+\end{frame}
+
 
 \begin{frame}{Post-coordinated terms}
   \begin{itemize}
