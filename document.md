@@ -345,42 +345,25 @@ For multi-field references, a CLUSTER with a single `shared_link` is the more na
 
 ## FHIR alignment
 
-`DV_REFERENCE` maps closely to two FHIR constructs.
-
 ### FHIR `Reference`
 
-FHIR `Reference` carries four optional fields: `reference` (a literal URL or relative reference), `type`, `identifier` (a logical identifier independent of the URL), and `display`. The key design point is that `reference` and `identifier` can coexist in the same instance — a FHIR resource can say "this is the URL *and* this is the logical business identifier for the same target".
-
-`DV_REFERENCE` covers the same ground but splits the two pointer kinds explicitly:
-
-- `internal_ref` (`DV_EHR_URI`) maps to FHIR's `reference` field — a resolvable pointer to the target.
-- `external_ref` (`OBJECT_REF`) maps to FHIR's `identifier` — a logical identifier for an external entity that may not be directly dereferenceable (e.g. a FHIR `Organization` identifier in a remote registry).
-- `display` maps directly to FHIR's `display`.
-
-The split also resolves FHIR's ambiguity: `internal_ref` and `external_ref` are mutually exclusive by invariant, whereas FHIR allows `reference` and `identifier` to coexist. The mutual exclusion was a deliberate choice — a single `DV_REFERENCE` targets either an internal openEHR `LOCATABLE` or an external entity, never both. An open question is whether `external_ref` should be allowed to carry a logical identifier alongside a resolvable URL (as FHIR does), to support external targets that are both addressable and identifiable independently.
+- `internal_ref` (`DV_EHR_URI`) → FHIR `reference` (resolvable URL)
+- `external_ref` (`OBJECT_REF`) → FHIR `identifier` (logical id)
+- `display` maps directly
+- FHIR allows `reference` and `identifier` to coexist; `DV_REFERENCE` enforces mutual exclusion by invariant
 
 ### FHIR `CodeableReference`
 
-`CodeableReference` holds either a `CodeableConcept` or a `Reference`. The design intent is that a field may be satisfied by a code alone (when no structured resource is available) or by a pointer to a resource (when one exists), and the two are interchangeable representations of the same thing.
-
-`DV_REFERENCE` covers this pattern through its invariant that allows `proxy` to be present without any `internal_ref` or `external_ref`. In that case:
-
-- **Reference case**: `internal_ref` or `external_ref` is set, and `proxy` surfaces values derived from the target — analogous to `CodeableReference.reference`.
-- **Coded case**: only `proxy` is populated with a hardcoded `DV_CODED_TEXT` value and no link is set — analogous to `CodeableReference.concept`.
-
-The ADL `Procedure.reason` example makes this explicit: the `ELEMENT.value` constraint accepts either a `DV_REFERENCE` with `internal_ref` (linked case) or a plain `DV_CODED_TEXT` (coded fallback), which is the same either/or that `CodeableReference` expresses natively in FHIR.
+- **Linked**: `internal_ref`/`external_ref` set, `proxy` resolved from target → `CodeableReference.reference`
+- **Coded fallback**: `proxy` only with hardcoded `DV_CODED_TEXT`, no link → `CodeableReference.concept`
 
 ## Open points
 
-- **`EHR_PATH` positional indexing**: the standard archetype path grammar has no notation for selecting a specific occurrence of a `0..*` node. AQL uses name predicates (`[at0002, 'name']`), not positional ones. If a path must unambiguously target one occurrence among many, a positional predicate such as `[n]` (e.g. `items[at0002][1]`) would need to be added to the `EHR_PATH` grammar. Without it, paths that pass through `0..*` nodes are ambiguous and cannot be resolved to a single value.
-
-- **Cross-CDR openEHR references**: `internal_ref` scopes to the local EHR and `external_ref` was designed for non-openEHR entities. There is no mechanism to point to a `LOCATABLE` in another openEHR CDR — the location of the remote CDR cannot be expressed. Needs a dedicated use case and requirement.
-
-- **Legacy data**: deprecate `LINK`; how to handle existing `OBJECT_REF` / `PARTY_REF` data is unresolved.
-
-- **`DV_EHR_URI` `namespace` and `type` fields**: it is unclear whether these are needed on `DV_EHR_URI` at the instance level, since the target class and archetype can already be constrained at modeling time via `archetype_id` in ADL. If the archetype fully expresses the constraint, carrying `namespace` and `type` at runtime is redundant. Needs a decision on whether they serve a validation or runtime-resolution purpose that ADL cannot cover.
-
-- **`PROXY_EXPRESSION` component ordering**: the `components` list is ordered (AS OF first, AND following), but JSON does not enforce array ordering in all implementations. An explicit `index` field on `EXPRESSION_DEFINITION` may be needed to guarantee the correct expression language serialization order regardless of the serialization format.
+- **`EHR_PATH` positional indexing**: no notation for selecting a specific occurrence of a `0..*` node; paths through multi-valued nodes are ambiguous.
+- **Cross-CDR references**: no mechanism to point to a `LOCATABLE` in another openEHR CDR.
+- **Legacy data**: deprecate `LINK`; migration of existing `OBJECT_REF` / `PARTY_REF` unresolved.
+- **`DV_EHR_URI` `namespace` and `type`**: may be redundant if the archetype already constrains the target via `archetype_id` in ADL.
+- **`PROXY_EXPRESSION` ordering**: JSON does not enforce array order; an explicit `index` on `EXPRESSION_DEFINITION` may be needed.
 
 ## Examples
 
