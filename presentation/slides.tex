@@ -29,16 +29,6 @@
 \end{frame}
 
 \begin{frame}{A concrete example}
-  \begin{itemize}
-    \item \texttt{Procedure.reason} should accept a typed reference or a static code
-    \item Linked \texttt{problem\_diagnosis} exists: point to it, surface diagnosis code inline
-    \item Nothing linked: fall back to a coded value from a value set
-    \item Both cases belong in the same field, constrained by the archetype
-    \item No single mechanism covers this. Modelers duplicate the value, use a free-text \texttt{LINK} nobody queries, or leave the field disconnected.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{A concrete example}
   \begin{figure}
     \includegraphics[width=\textwidth]{../lung_cancer.png}
   \end{figure}
@@ -50,12 +40,23 @@
   \end{figure}
 \end{frame}
 
+\begin{frame}{A concrete example}
+  \begin{itemize}
+    \item \texttt{Procedure.reason} should accept a typed reference or a static code
+    \item Linked \texttt{problem\_diagnosis} exists: point to it, surface diagnosis code inline
+    \item Nothing linked: fall back to a coded value from a value set
+    \item Both cases belong in the same field, constrained by the archetype
+    \item No single mechanism covers this. Modelers duplicate the value, use a free-text \texttt{LINK} nobody queries, or leave the field disconnected.
+  \end{itemize}
+\end{frame}
+
+
 \section{How FHIR solves it}
 
 \begin{frame}{FHIR: \texttt{Reference}}
   \begin{itemize}
-    \item First-class data type, used explicitly per resource field
-    \item Carries: reference string, type, logical identifier, display label
+    \item used explicitly per resource field
+    \item reference string, type, logical identifier, display label
   \end{itemize}
   \begin{figure}
     \includegraphics[width=1\textwidth]{../Reference.png}
