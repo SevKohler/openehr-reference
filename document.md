@@ -249,7 +249,7 @@ Inherits from `PROXY_BASE`. Intended for post-coordinated expressions where a co
   <tr style="background-color:#ffffff; color:#000;">
     <td>1..1</td>
     <td><code>attribute</code>: <code>CODE_PHRASE</code></td>
-    <td>Operator defined by the expression language for this axis (e.g. <code>"^"</code> = focus concept, <code>":"</code> = AS OF for the first refinement, <code>","</code> = AND for subsequent refinements in SNOMED CT SCG). Other expression languages may define different operators.</td>
+    <td>Operator defined by the expression language for this axis (e.g. <code>"focus concept"</code> for the base concept, <code>":"</code> = AS OF for the first refinement, <code>","</code> = AND for subsequent refinements in SNOMED CT SCG). Other expression languages may define different operators.</td>
   </tr>
   <tr style="background-color:#f5f5f5; color:#000;">
     <td>1..1</td>
@@ -532,7 +532,7 @@ As a JSON instance:
       "components": [
         {
           "_type": "EXPRESSION_DEFINITION",
-          "attribute": { "terminology_id": "snomed", "code_string": "^" },
+          "attribute": { "terminology_id": "snomed", "code_string": "focus concept" },
           "code": { "terminology_id": "snomed", "code_string": "363346000" },
           "path": "/data[at0001]/items[at0001]/value"
         },
