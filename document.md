@@ -393,6 +393,8 @@ Two cases for `Procedure.reason`: linked (reference to a recorded `problem_diagn
   "_type": "DV_REFERENCE",
   "internal_ref": {
     "_type": "DV_EHR_URI",
+    "namespace": "openEHR",
+    "type": "EVALUATION",
     "value": "ehr://ehr-id/compositions/comp-id/content[at0001]/data[at0002]/items[at0003]"
   },
   "display": {
@@ -474,6 +476,8 @@ As a JSON instance:
   "_type": "DV_REFERENCE",
   "internal_ref": {
     "_type": "DV_EHR_URI",
+    "namespace": "openEHR",
+    "type": "EVALUATION",
     "value": "ehr://ehr-id/compositions/comp-id/content[at0001]/data[at0002]/items[at0003]"
   },
   "proxy": [
