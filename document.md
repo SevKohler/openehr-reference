@@ -448,3 +448,47 @@ CLUSTER[id1] matches {                                          -- procedure_dia
 ```
 
 The CLUSTER's `shared_link` constrains the link to a `problem_diagnosis`. Each child ELEMENT carries a `source_path` constraint pointing into the linked target. The local `value` constraint defines what the resolved value must look like and what the modeler accepts when hardcoding.
+
+### `PROXY_EXPRESSION` — post-coordinated diagnosis on a procedure
+
+This example records "Malignant neoplasm of right kidney" as a SNOMED CT post-coordinated expression, assembled from a linked `problem_diagnosis` archetype instance. The focus concept is hardcoded; the finding site is resolved dynamically from the linked archetype; laterality is a static hardcoded value.
+
+The SNOMED CT Expression Language representation is:
+
+```
+363346000|Malignant neoplastic disease|:
+  363698007|Finding site|=64033007|Kidney structure|,
+  272741003|Laterality|=24028007|Right|
+```
+
+In ADL:
+
+```adl
+ELEMENT[id3] occurrences matches {0..1} matches {    -- Diagnosis (post-coordinated)
+  value matches {
+    DV_REFERENCE[id4] matches {
+      internal_ref matches {
+        DV_EHR_URI[id5] matches {
+          archetype_id matches {/openEHR-EHR-EVALUATION\.problem_diagnosis\.v\d+/}
+        }
+      }
+      proxy matches {
+        PROXY_EXPRESSION[id6] matches {
+          components cardinality matches {2..2; ordered} matches {
+            EXPRESSION_DEFINITION[id7] matches {
+              term matches {[snomed::363698007]}          -- Finding site (attribute)
+              path matches {"/data[at0001]/items[at0002]/value"}  -- body site name
+            }
+            EXPRESSION_DEFINITION[id8] matches {
+              term matches {[snomed::272741003]}          -- Laterality (attribute)
+              code matches {[snomed::24028007]}           -- Right (hardcoded)
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+The focus concept (`363346000|Malignant neoplastic disease|`) is the archetype-level concept of the `problem_diagnosis` EVALUATION targeted by `internal_ref`. The `:` operator refines it with the two `EXPRESSION_DEFINITION` axes: the finding site is resolved at runtime from the archetype path; laterality is fixed at modeling time via a hardcoded `code`.
