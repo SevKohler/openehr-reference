@@ -201,7 +201,7 @@ Inherits from `PROXY_BASE`. Narrows `path` to `0..1`.
 
 #### `PROXY_EXPRESSION` class
 
-Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOMED CT), where a concept is composed from named component axes. Each component is a `(term, path)` pair, modeled as a `EXPRESSION_DEFINITION`.
+Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOMED CT), where a concept is composed from named component axes. Each component is an `EXPRESSION_DEFINITION` carrying a `term` (`CODE_PHRASE` for the SNOMED CT attribute), and either a `path` into the linked archetype or a hardcoded `code` (`CODE_PHRASE`) for static values.
 
 <table>
   <tr style="background-color:#87CEEB; color:#000;">
@@ -210,7 +210,7 @@ Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOM
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
     <td><b>Description</b></td>
-    <td colspan="2">Carries a post-coordinated definition as an ordered list of <code>(term, path)</code> pairs, one per component axis (e.g. finding, laterality, site). <code>internal_ref</code> on the parent <code>DV_REFERENCE</code> identifies the target archetype instance as the root. Each <code>EXPRESSION_DEFINITION.path</code> is relative to that root and resolves to the <code>DATA_VALUE</code> of one axis. The inherited <code>value</code> holds the single assembled result.</td>
+    <td colspan="2">Carries a post-coordinated definition as an ordered list of <code>EXPRESSION_DEFINITION</code> entries, one per component axis. Each entry has a <code>term</code> (<code>CODE_PHRASE</code> for the SNOMED CT attribute) and either a <code>path</code> relative to <code>internal_ref</code> resolving the value dynamically, or a hardcoded <code>code</code> (<code>CODE_PHRASE</code>) for static components. The inherited <code>value</code> holds the single assembled result.</td>
   </tr>
   <tr style="background-color:#87CEEB; color:#000;">
     <td><b>Attributes</b></td>
@@ -244,7 +244,7 @@ Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOM
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
     <td><b>Description</b></td>
-    <td colspan="2">A single <code>(term, path)</code> pair representing one axis of a post-coordinated definition. <code>path</code> is relative to the <code>internal_ref</code> on the parent <code>DV_REFERENCE</code> and resolves to the <code>DATA_VALUE</code> of that axis within the linked archetype instance, e.g. <code>("finding", /data/.../value)</code>, <code>("laterality", /data/.../value)</code>.</td>
+    <td colspan="2">A single component axis of a post-coordinated definition. Each axis carries a typed <code>term</code> (<code>CODE_PHRASE</code>) identifying the SNOMED CT attribute role, and either a <code>path</code> resolving the value from the linked archetype instance or a hardcoded <code>code</code> (<code>CODE_PHRASE</code>) for static values.</td>
   </tr>
   <tr style="background-color:#87CEEB; color:#000;">
     <td><b>Attributes</b></td>
@@ -253,13 +253,18 @@ Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOM
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
     <td>1..1</td>
-    <td><code>term</code>: <code>String</code></td>
-    <td>Label for this component axis, e.g. <code>"finding"</code>, <code>"laterality"</code>, <code>"site"</code>.</td>
+    <td><code>term</code>: <code>CODE_PHRASE</code></td>
+    <td>Typed identifier for this component axis, e.g. <code>363698007|Finding site (attribute)|</code> or <code>272741003|Laterality (attribute)|</code> from SNOMED CT.</td>
   </tr>
   <tr style="background-color:#f5f5f5; color:#000;">
     <td>0..1</td>
     <td><code>path</code>: <code>EHR_PATH</code></td>
-    <td>Path to the value for this axis, relative to <code>internal_ref</code>. Absent if the component value is hardcoded.</td>
+    <td>Path to the value for this axis, relative to <code>internal_ref</code>. Absent if the component value is hardcoded via <code>code</code>.</td>
+  </tr>
+  <tr style="background-color:#ffffff; color:#000;">
+    <td>0..1</td>
+    <td><code>code</code>: <code>CODE_PHRASE</code></td>
+    <td>Hardcoded value for this axis when no <code>path</code> is available, e.g. <code>24028007|Right (qualifier value)|</code>. Used for static components whose value is fixed at modeling time.</td>
   </tr>
   <tr style="background-color:#87CEEB; color:#000;">
     <td><b>Invariants</b></td>
@@ -268,7 +273,7 @@ Inherits from `PROXY_BASE`. Intended for post-coordinated expressions (e.g. SNOM
   <tr style="background-color:#ffffff; color:#000;">
     <td colspan="3">
       <ul>
-        <li>At least one of <code>path</code> or <code>term</code> is set.</li>
+        <li>Exactly one of <code>path</code> or <code>code</code> is set.</li>
       </ul>
     </td>
   </tr>
