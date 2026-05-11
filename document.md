@@ -181,6 +181,11 @@ Inherits from `PROXY_BASE`. Narrows `path` to `0..1`.
     <td><code>path</code>: <code>EHR_PATH</code></td>
     <td>Archetype path relative to <code>internal_ref</code>. Present when proxying from a linked target.</td>
   </tr>
+  <tr style="background-color:#f5f5f5; color:#000;">
+    <td>0..1</td>
+    <td><code>value</code>: <code>DATA_VALUE</code></td>
+    <td>Resolved or hardcoded value.</td>
+  </tr>
   <tr style="background-color:#87CEEB; color:#000;">
     <td><b>Invariants</b></td>
     <td colspan="2"></td>
