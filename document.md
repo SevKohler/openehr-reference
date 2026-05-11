@@ -490,6 +490,12 @@ As a JSON instance:
           "attribute": { "terminology_id": "snomed", "code_string": "," },
           "code": { "terminology_id": "snomed", "code_string": "272741003" },
           "path": "/data[at0001]/items[at0005]/value"
+        },
+        {
+          "_type": "EXPRESSION_DEFINITION",
+          "attribute": { "terminology_id": "snomed", "code_string": "," },
+          "code": { "terminology_id": "snomed", "code_string": "116676008" },
+          "path": "/data[at0001]/items[at0073]/value"
         }
       ]
     }
