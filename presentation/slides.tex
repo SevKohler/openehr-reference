@@ -119,7 +119,7 @@
   \end{figure}
 \end{frame}
 
-\begin{frame}{openEHR: DV\_EHR\_URI}
+\begin{frame}{openEHR: DV\_EHR\_URI and DV\_URI}
   \begin{itemize}
     \item data value can be modeled explicitly
     \item cannot be constrained to e.g. just linking EVALUATION
@@ -132,8 +132,8 @@
 
 \begin{frame}{openEHR: external references}
   \begin{itemize}
-    \item Modeled separately via \texttt{PARTY\_REF}, \texttt{OBJECT\_REF} and related classes
-    \item A different mechanism from \texttt{LINK}
+    \item Modeled explicitly, also part of the RM classes via \texttt{DV\_URI} \texttt{PARTY\_REF}, \texttt{OBJECT\_REF} and related classes
+    \item A different mechanism from \texttt{LINK} which is purely internal
   \end{itemize}
 
   \begin{figure}
@@ -149,6 +149,7 @@
     \item \texttt{type} is a free string, no terminology binding or validation
     \item Cannot be placed inside \texttt{ELEMENT.value}
     \item No shared abstraction with external references (\texttt{OBJECT\_REF}, \texttt{PARTY\_REF})
+    \item There also explicit modeled references via DV\_EHR\_URI
     \item Every team uses it differently, cross-system querying breaks
   \end{itemize}
 \end{frame}
@@ -161,9 +162,6 @@
     \item openEHR has no dedicated structure for it
     \item Currently handled ad-hoc or not at all
   \end{itemize}
-  \begin{alertblock}{Open in both}
-    Post-coordination is an unsolved problem across standards.
-  \end{alertblock}
 \end{frame}
 
 \begin{frame}{Example: post-coordinated expression}
@@ -184,7 +182,7 @@
 \begin{frame}{Problems: missing capabilities}
   \begin{itemize}
     \item No way to express a reference and a coded fallback in one field
-    \item External references are RM-level only, not usable in archetypes
+    \item Mix between explicit modeled, RM defined, implicit via \texttt{LINK}
     \item No mechanism to surface values from a linked target inline
     \item Duplicating values is the only workaround, duplicates go stale
     \item Post-coordinated terms have no dedicated structure in either standard
@@ -192,7 +190,6 @@
 \end{frame}
 
 \section{Proposal}
-
 
 \begin{frame}{Proposal: \texttt{DV\_REFERENCE}}
   \begin{itemize}
@@ -221,9 +218,9 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{\texttt{PROXY\_BASE}}
+\begin{frame}{\texttt{PROXY\_VALUES}}
   \begin{figure}
-    \includegraphics[width=\textwidth]{../proxy_base.png}
+    \includegraphics[width=\textwidth]{../proxy_values.png}
   \end{figure}
 \end{frame}
 
@@ -328,6 +325,16 @@
     \item Assembled \texttt{value}: post-coordinated expression stored as a single \texttt{DV\_CODED\_TEXT}
   \end{itemize}
 \end{frame}
+
+\begin{frame}{Example: post-coordinated expression}
+  \begin{figure}
+    \includegraphics[width=0.9\textwidth]{../procedure_expression.png}
+  \end{figure}
+  \begin{center}
+    \small\texttt{363346000|Malignant neoplastic disease|:363698007|Finding site|=64033007|Kidney structure|,272741003|Laterality|=24028007|Right|}
+  \end{center}
+\end{frame}
+
 
 \begin{frame}{CLUSTER with \texttt{shared\_link}}
   \begin{itemize}
