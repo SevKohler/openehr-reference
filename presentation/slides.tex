@@ -45,7 +45,7 @@
 \begin{frame}{What is a clinical reference?}
   \begin{itemize}
     \item Clinical data points to other clinical data
-    \item Procedure $\rightarrow$ reason, Device $\rightarrow$ entry, Composition $\rightarrow$ encounter
+    \item Procedure $\rightarrow$ reason, Condition $\rightarrow$ Encounter
     \item Target may be inside the same EHR or in an external system
     \item A \textbf{clinical reference} is that typed pointer
     \item  How do you model it so it is typed, constrainable, and interoperable?
@@ -71,10 +71,8 @@
     \item Linked \texttt{problem\_diagnosis} exists: point to it, surface diagnosis code inline
     \item Nothing linked: fall back to a coded value from a value set
     \item Both cases belong in the same field, constrained by the archetype
-    \item No single mechanism covers this. Modelers duplicate the value, use a free-text \texttt{LINK} nobody queries, or leave the field disconnected.
   \end{itemize}
 \end{frame}
-
 
 \section{How FHIR solves it}
 
@@ -102,7 +100,7 @@
   \begin{itemize}
     \item Explicitly typed, not free text
     \item Pointer and coded fallback in the same field
-    \item Constrainable per field, not attachable everywhere
+    \item not attachable everywhere, explicit modeled
     \item Fixed structure enforces interoperability
   \end{itemize}
 \end{frame}
@@ -113,10 +111,22 @@
   \begin{itemize}
     \item Available on every \texttt{LOCATABLE}
     \item Carries meaning, type (free string), and target URI
-    \item Only mechanism for internal references, no archetype-level control
+    \item Only mechanism for internal references
+    \item no archetype-level control cannot be constrained
   \end{itemize}
   \begin{figure}
     \includegraphics[width=\textwidth]{../LINKS.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{openEHR: DV\_EHR\_URI}
+  \begin{itemize}
+    \item data value that is modeled explicitly
+    \item cannot be constrained to e.g. just linking EVALUATION or some field
+  \end{itemize}
+
+  \begin{figure}
+    \includegraphics[width=1\textwidth]{../PARTY.png}
   \end{figure}
 \end{frame}
 
