@@ -113,7 +113,7 @@ Inherits from `DATA_VALUE`.
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
     <td>0..1</td>
-    <td><code>display</code>: <code>DV_TEXT</code></td>
+    <td><code>display</code>: <code>String</code></td>
     <td>Human-readable label for the target.</td>
   </tr>
   <tr style="background-color:#ffffff; color:#000;">
@@ -380,10 +380,7 @@ Two cases for `Procedure.reason`: linked (reference to a recorded `problem_diagn
     "_type": "DV_EHR_URI",
     "value": "ehr://ehr-id/compositions/comp-id/content[at0001]/data[at0002]/items[at0003]"
   },
-  "display": {
-    "_type": "DV_TEXT",
-    "value": "Malignant neoplasm of right kidney"
-  },
+  "display": "Malignant neoplasm of right kidney",
   "proxy": [
     {
       "_type": "PROXY_VALUE",
@@ -433,10 +430,7 @@ A `Procedure.performer` pointing to an `Organization` held in a FHIR registry ou
       "scheme": "https://fhir.example.org"
     }
   },
-  "display": {
-    "_type": "DV_TEXT",
-    "value": "City Oncology Centre"
-  }
+  "display": "City Oncology Centre"
 }
 ```
 
