@@ -45,7 +45,7 @@
 \begin{frame}{What is a clinical reference?}
   \begin{itemize}
     \item Clinical data points to other clinical data
-    \item Target may be inside the same EHR or in an external system
+    \item Target may be inside the same system or in an external system
     \item A \textbf{clinical reference} is that typed pointer
     \item  How do you model it so it is typed, constrainable, and interoperable?
   \end{itemize}
@@ -110,7 +110,7 @@
   \begin{itemize}
     \item Available on every \texttt{LOCATABLE}
     \item Carries meaning, type (free string), and target URI
-    \item Only mechanism for internal references
+    \item mechanism for internal references
     \item no archetype-level control cannot be constrained
   \end{itemize}
   \begin{figure}
@@ -146,7 +146,6 @@
   \begin{itemize}
     \item Attachable to any \texttt{LOCATABLE}, cannot be scoped to a field
     \item \texttt{type} is a free string, no terminology binding or validation
-    \item No shared abstraction with external references (\texttt{OBJECT\_REF}, \texttt{PARTY\_REF})
     \item You cannot say what to expect from the link target
     \item There also explicit modeled references via DV\_EHR\_URI
     \item Every team uses it differently, cross-system querying breaks
@@ -184,7 +183,7 @@
     \item No way to express a reference and a coded fallback in one field
     \item Mix between explicit modeled, RM defined, implicit via \texttt{LINK}
     \item No mechanism to surface values from a linked target inline
-    \item Duplicating values is the only workaround, duplicates go stale
+    \item Duplicating values is the only workaround, they smell
     \item Post-coordinated terms have no dedicated structure in either standard
   \end{itemize}
 \end{frame}
@@ -305,11 +304,6 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{\texttt{PROXY\_EXPRESSION}}
-  \begin{figure}
-    \includegraphics[width=.8\textwidth]{../Expression_definition.png}
-  \end{figure}
-\end{frame}
 
 \begin{frame}{Example: post-coordinated expression}
   \scriptsize
@@ -331,15 +325,11 @@
   \end{center}
 \end{frame}
 
-\begin{frame}{Example: post-coordinated expression}
+\begin{frame}{\texttt{PROXY\_EXPRESSION}}
   \begin{figure}
-    \includegraphics[width=0.9\textwidth]{../procedure_expression.png}
+    \includegraphics[width=.8\textwidth]{../Expression_definition.png}
   \end{figure}
-  \begin{center}
-    \small\texttt{363346000|Malignant neoplastic disease|:363698007|Finding site|=64033007|Kidney structure|,272741003|Laterality|=24028007|Right|}
-  \end{center}
 \end{frame}
-
 
 % \begin{frame}{CLUSTER with \texttt{shared\_link}}
 %   \begin{itemize}
@@ -366,11 +356,8 @@
 
 \begin{frame}{Open points}
   \begin{itemize}
-    \item \texttt{EHR\_PATH} has no positional predicate for \texttt{0..*} nodes, paths are ambiguous
     \item Do we want post\_coordinated terms ? shouldnt these just be proxied
     \item how does the modeling look ?
-    \item Should \texttt{shared\_link} forbid \texttt{proxy} via a stricter subtype of \texttt{DV\_REFERENCE}?
-    \item Resolution behaviour when linked target no longer satisfies local constraint
     \item Legacy data: deprecate \texttt{LINK} ? how to handle existing \texttt{OBJECT\_REF} / \texttt{PARTY\_REF}
   \end{itemize}
 \end{frame}
