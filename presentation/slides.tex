@@ -161,6 +161,7 @@
     \item FHIR has no dedicated structure for it
     \item openEHR has no dedicated structure for it
     \item Currently handled ad-hoc or not at all
+    \item necessary ? its colliding existing fields 
   \end{itemize}
 \end{frame}
 
@@ -319,7 +320,7 @@
     \toprule
     \textbf{attribute} & \textbf{code} & \textbf{path} \\
     \midrule
-    focus concept & 363346000 & /data[at0001]/items[at0001]/value \\
+    focus concept & 363346000 & /data[at0001]/items[at0001]/value  \\
     :             & 363698007 & /data[at0001]/items[at0002]/value \\
     ,             & 272741003 & /data[at0001]/items[at0005]/value \\
     ,             & 116676008 & /data[at0001]/items[at0073]/value \\
@@ -375,7 +376,8 @@
 \begin{frame}{Open points}
   \begin{itemize}
     \item \texttt{EHR\_PATH} has no positional predicate for \texttt{0..*} nodes, paths are ambiguous
-    \item No mechanism to reference a \texttt{LOCATABLE} in another openEHR CDR
+    \item Do we want post\_coordinated terms ? shouldnt these just be proxied
+    \item how does the modeling look ?
     \item Should \texttt{shared\_link} forbid \texttt{proxy} via a stricter subtype of \texttt{DV\_REFERENCE}?
     \item Resolution behaviour when linked target no longer satisfies local constraint
     \item Legacy data: deprecate \texttt{LINK} ? how to handle existing \texttt{OBJECT\_REF} / \texttt{PARTY\_REF}
