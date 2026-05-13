@@ -98,7 +98,7 @@
 \begin{frame}{What FHIR gets right}
   \begin{itemize}
     \item Explicitly typed, not free text
-    \item Pointer and coded fallback in the same field
+    \item Pointer and code
     \item not attachable everywhere, explicit modeled
     \item Fixed structure enforces interoperability
   \end{itemize}
@@ -132,7 +132,7 @@
 \begin{frame}{openEHR: external references}
   \begin{itemize}
     \item Modeled explicitly, also part of the RM classes via \texttt{DV\_URI} \texttt{PARTY\_REF}, \texttt{OBJECT\_REF} and related classes
-    \item A different mechanism from \texttt{LINK} which is purely internal
+    \item A different mechanism from \texttt{LINK}
   \end{itemize}
 
   \begin{figure}
@@ -146,8 +146,8 @@
   \begin{itemize}
     \item Attachable to any \texttt{LOCATABLE}, cannot be scoped to a field
     \item \texttt{type} is a free string, no terminology binding or validation
-    \item Cannot be placed inside \texttt{ELEMENT.value}
     \item No shared abstraction with external references (\texttt{OBJECT\_REF}, \texttt{PARTY\_REF})
+    \item You cannot say what to expect from the link target
     \item There also explicit modeled references via DV\_EHR\_URI
     \item Every team uses it differently, cross-system querying breaks
   \end{itemize}
@@ -179,7 +179,7 @@
   \end{center}
 \end{frame}
 
-\begin{frame}{Problems: missing capabilities}
+\begin{frame}{Summary}
   \begin{itemize}
     \item No way to express a reference and a coded fallback in one field
     \item Mix between explicit modeled, RM defined, implicit via \texttt{LINK}
